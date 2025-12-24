@@ -1,973 +1,725 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🐺 Werwolf</title>
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-      body {
-        font-family: "Segoe UI", system-ui, sans-serif;
-        background: linear-gradient(
-          135deg,
-          #1a1a2e 0%,
-          #16213e 50%,
-          #0f3460 100%
-        );
-        min-height: 100vh;
-        color: #fff;
-        padding: 20px;
-        line-height: 1.7;
-      }
-
-      .container {
-        max-width: 480px;
-        margin: 0 auto;
-      }
-
-      h1 {
-        text-align: center;
-        font-size: 2.2rem;
-        margin-bottom: 5px;
-      }
-      h2 {
-        font-size: 1.2rem;
-        color: #a8a8a8;
-        margin-bottom: 20px;
-      }
-      h3 {
-        color: #6c63ff;
-        margin: 20px 0 10px;
-        font-size: 1.1rem;
-      }
-
-      .subtitle {
-        text-align: center;
-        color: #888;
-        margin-bottom: 30px;
-      }
-
-      .card {
-        background: rgba(255, 255, 255, 0.08);
-        border-radius: 20px;
-        padding: 25px;
-        margin-bottom: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      .hidden {
-        display: none !important;
-      }
-
-      textarea {
-        width: 100%;
-        padding: 14px;
-        border: 2px solid rgba(255, 255, 255, 0.15);
-        border-radius: 12px;
-        background: rgba(0, 0, 0, 0.3);
-        color: #fff;
-        font-size: 1rem;
-        font-family: inherit;
-        min-height: 200px;
-        resize: vertical;
-        margin-bottom: 10px;
-      }
-
-      textarea:focus {
-        outline: none;
-        border-color: #6c63ff;
-      }
-
-      small {
-        color: #666;
-      }
-
-      .btn {
-        width: 100%;
-        padding: 16px;
-        border: none;
-        border-radius: 12px;
-        font-size: 1.1rem;
-        font-weight: 600;
-        cursor: pointer;
-        margin-top: 10px;
-      }
-
-      .btn-primary {
-        background: linear-gradient(135deg, #6c63ff, #5a52d5);
-        color: #fff;
-      }
-      .btn-secondary {
-        background: transparent;
-        border: 2px solid rgba(255, 255, 255, 0.2);
-        color: #fff;
-      }
-      .btn-reveal {
-        background: rgba(108, 99, 255, 0.15);
-        border: 3px dashed rgba(255, 255, 255, 0.3);
-        color: #fff;
-        padding: 35px;
-        font-size: 1.4rem;
-      }
-      .btn-reveal:hover {
-        background: rgba(108, 99, 255, 0.25);
-        border-color: #6c63ff;
-      }
-
-      .player-link {
-        background: rgba(0, 0, 0, 0.3);
-        border-radius: 12px;
-        padding: 12px 15px;
-        margin-bottom: 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .player-link-name {
-        font-weight: 600;
-        color: #6c63ff;
-        font-size: 1.1rem;
-      }
-
-      .btn-copy {
-        padding: 8px 16px;
-        border: none;
-        border-radius: 8px;
-        background: rgba(108, 99, 255, 0.4);
-        color: #fff;
-        cursor: pointer;
-        font-size: 0.9rem;
-      }
-
-      .btn-copy.copied {
-        background: #27ae60;
-      }
-
-      .role-emoji {
-        font-size: 5rem;
-        text-align: center;
-        display: block;
-        margin: 10px 0 15px;
-      }
-      .role-name {
-        text-align: center;
-        font-size: 2.2rem;
-        font-weight: bold;
-        margin-bottom: 10px;
-      }
-
-      .role-team {
-        text-align: center;
-        padding: 10px;
-        border-radius: 20px;
-        margin-bottom: 20px;
-        font-weight: 600;
-        font-size: 1.1rem;
-      }
-
-      .role-team.evil {
-        background: linear-gradient(135deg, #c0392b, #96281b);
-      }
-      .role-team.good {
-        background: linear-gradient(135deg, #27ae60, #1e8449);
-      }
-
-      .role-box {
-        background: rgba(0, 0, 0, 0.25);
-        border-radius: 12px;
-        padding: 15px;
-        margin-bottom: 15px;
-      }
-
-      .role-box p {
-        margin-bottom: 10px;
-      }
-      .role-box ul {
-        margin-left: 20px;
-      }
-      .role-box li {
-        margin: 8px 0;
-      }
-
-      .teammates {
-        background: rgba(192, 57, 43, 0.25);
-        border: 2px solid #e74c3c;
-        border-radius: 12px;
-        padding: 15px;
-        margin-bottom: 15px;
-      }
-
-      .teammates h3 {
-        margin-top: 0;
-        color: #e74c3c;
-      }
-      .teammates ul {
-        list-style: none;
-      }
-      .teammates li {
-        padding: 8px 0;
-        font-size: 1.2rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      }
-      .teammates li:last-child {
-        border: none;
-      }
-
-      .warning {
-        background: rgba(243, 156, 18, 0.2);
-        border-radius: 10px;
-        padding: 15px;
-        text-align: center;
-        color: #f39c12;
-        margin: 15px 0;
-        font-weight: 500;
-      }
-
-      .info-box {
-        background: rgba(108, 99, 255, 0.15);
-        border-radius: 10px;
-        padding: 15px;
-        margin: 15px 0;
-        font-size: 0.9rem;
-      }
-
-      .btn-rules {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        border: none;
-        background: linear-gradient(135deg, #6c63ff, #5a52d5);
-        color: #fff;
-        font-size: 1.6rem;
-        cursor: pointer;
-        box-shadow: 0 4px 20px rgba(108, 99, 255, 0.5);
-        z-index: 100;
-      }
-
-      .modal-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.92);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-        padding: 15px;
-      }
-
-      .modal {
-        background: linear-gradient(135deg, #1a1a2e, #16213e);
-        border-radius: 20px;
-        max-width: 500px;
-        width: 100%;
-        max-height: 90vh;
-        overflow-y: auto;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      .modal-header {
-        padding: 20px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: sticky;
-        top: 0;
-        background: linear-gradient(135deg, #1a1a2e, #16213e);
-        z-index: 1;
-      }
-
-      .modal-header h2 {
-        margin: 0;
-      }
-
-      .modal-close {
-        background: none;
-        border: none;
-        color: #fff;
-        font-size: 2rem;
-        cursor: pointer;
-        opacity: 0.7;
-        line-height: 1;
-      }
-
-      .modal-close:hover {
-        opacity: 1;
-      }
-
-      .modal-content {
-        padding: 20px;
-      }
-      .modal-content p {
-        margin-bottom: 8px;
-      }
-      .modal-content ul {
-        margin: 10px 0 15px 20px;
-      }
-      .modal-content li {
-        margin: 6px 0;
-      }
-
-      .rule-card {
-        background: rgba(0, 0, 0, 0.3);
-        border-radius: 12px;
-        padding: 15px;
-        margin: 15px 0;
-      }
-
-      .rule-card h3 {
-        margin-top: 0;
-      }
-      .rule-card.wolf {
-        border-left: 4px solid #e74c3c;
-      }
-      .rule-card.wolf h3 {
-        color: #e74c3c;
-      }
-      .rule-card.village {
-        border-left: 4px solid #2ecc71;
-      }
-      .rule-card.village h3 {
-        color: #2ecc71;
-      }
-      .rule-card.special {
-        border-left: 4px solid #9b59b6;
-      }
-      .rule-card.special h3 {
-        color: #9b59b6;
-      }
-
-      .toast {
-        position: fixed;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 12px 24px;
-        border-radius: 10px;
-        color: #fff;
-        font-weight: 500;
-        z-index: 9999;
-        animation: slideIn 0.3s;
-      }
-
-      @keyframes slideIn {
-        from {
-          opacity: 0;
-          transform: translateX(-50%) translateY(-20px);
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+            line-height: 1.7;
         }
-        to {
-          opacity: 1;
-          transform: translateX(-50%) translateY(0);
+
+        .container { max-width: 480px; margin: 0 auto; }
+        h1 { text-align: center; font-size: 2.2rem; margin-bottom: 5px; }
+        h2 { font-size: 1.2rem; color: #a8a8a8; margin-bottom: 20px; }
+        h3 { color: #6c63ff; margin: 20px 0 10px; font-size: 1.1rem; }
+        .subtitle { text-align: center; color: #888; margin-bottom: 30px; }
+
+        .card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
         }
-      }
+
+        .hidden { display: none !important; }
+
+        textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid rgba(255,255,255,0.15);
+            border-radius: 12px;
+            background: rgba(0,0,0,0.3);
+            color: #fff;
+            font-size: 1rem;
+            font-family: inherit;
+            min-height: 200px;
+            resize: vertical;
+            margin-bottom: 10px;
+        }
+
+        textarea:focus { outline: none; border-color: #6c63ff; }
+        small { color: #666; }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-primary { background: linear-gradient(135deg, #6c63ff, #5a52d5); color: #fff; }
+        .btn-secondary { background: transparent; border: 2px solid rgba(255,255,255,0.2); color: #fff; }
+        .btn-reveal { background: rgba(108,99,255,0.15); border: 3px dashed rgba(255,255,255,0.3); color: #fff; padding: 35px; font-size: 1.4rem; }
+        .btn-reveal:hover { background: rgba(108,99,255,0.25); border-color: #6c63ff; }
+
+        .player-link {
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .player-link-name { font-weight: 600; color: #6c63ff; font-size: 1.1rem; }
+
+        .btn-copy {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(108,99,255,0.4);
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn-copy.copied { background: #27ae60; }
+
+        .role-emoji { font-size: 5rem; text-align: center; display: block; margin: 10px 0 15px; }
+        .role-name { text-align: center; font-size: 2.2rem; font-weight: bold; margin-bottom: 10px; }
+
+        .role-team {
+            text-align: center;
+            padding: 10px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .role-team.evil { background: linear-gradient(135deg, #c0392b, #96281b); }
+        .role-team.good { background: linear-gradient(135deg, #27ae60, #1e8449); }
+
+        .role-box {
+            background: rgba(0,0,0,0.25);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .role-box p { margin-bottom: 10px; }
+        .role-box ul { margin-left: 20px; }
+        .role-box li { margin: 8px 0; }
+
+        .teammates {
+            background: rgba(192,57,43,0.25);
+            border: 2px solid #e74c3c;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .teammates h3 { margin-top: 0; color: #e74c3c; }
+        .teammates ul { list-style: none; }
+        .teammates li { padding: 8px 0; font-size: 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .teammates li:last-child { border: none; }
+
+        .warning {
+            background: rgba(243,156,18,0.2);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            color: #f39c12;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+
+        .info-box {
+            background: rgba(108,99,255,0.15);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 0.9rem;
+        }
+
+        .btn-rules {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #6c63ff, #5a52d5);
+            color: #fff;
+            font-size: 1.6rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(108,99,255,0.5);
+            z-index: 100;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.92);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 15px;
+        }
+
+        .modal {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border-radius: 20px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            z-index: 1;
+        }
+
+        .modal-header h2 { margin: 0; }
+        .modal-close {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            opacity: 0.7;
+            line-height: 1;
+        }
+        .modal-close:hover { opacity: 1; }
+
+        .modal-content { padding: 20px; }
+        .modal-content p { margin-bottom: 8px; }
+        .modal-content ul { margin: 10px 0 15px 20px; }
+        .modal-content li { margin: 6px 0; }
+
+        .rule-card {
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .rule-card h3 { margin-top: 0; }
+        .rule-card.wolf { border-left: 4px solid #e74c3c; }
+        .rule-card.wolf h3 { color: #e74c3c; }
+        .rule-card.village { border-left: 4px solid #2ecc71; }
+        .rule-card.village h3 { color: #2ecc71; }
+        .rule-card.special { border-left: 4px solid #9b59b6; }
+        .rule-card.special h3 { color: #9b59b6; }
+
+        .or-divider {
+            text-align: center;
+            color: #f39c12;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 24px;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 500;
+            z-index: 9999;
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <div class="container">
-      <!-- ADMIN -->
-      <div id="admin-section">
-        <h1>🐺 Werwolf</h1>
-        <p class="subtitle">Real-Life Edition</p>
 
-        <div class="card" id="setup-card">
-          <h2>Wer spielt mit?</h2>
-          <textarea
-            id="player-names"
-            placeholder="Max
+        <!-- ADMIN -->
+        <div id="admin-section">
+            <h1>🐺 Werwolf</h1>
+            <p class="subtitle">Real-Life Edition</p>
+
+            <div class="card" id="setup-card">
+                <h2>Wer spielt mit?</h2>
+                <textarea id="player-names" placeholder="Max
 Anna
 Tom
 Lisa
-Ben"
-          ></textarea>
-          <small>Ein Name pro Zeile • 5-10 Spieler</small>
-          <button class="btn btn-primary" onclick="createGame()">
-            🎲 Rollen verteilen
-          </button>
+Ben"></textarea>
+                <small>Ein Name pro Zeile • 5-10 Spieler</small>
+                <button class="btn btn-primary" onclick="createGame()">🎲 Rollen verteilen</button>
+            </div>
+
+            <div class="card hidden" id="links-card">
+                <h2>📱 Links verschicken</h2>
+                <p style="margin-bottom:15px;">Schick jedem <strong>privat</strong> seinen Link:</p>
+                <div id="player-links"></div>
+                <button class="btn btn-secondary" onclick="resetGame()">↻ Neues Spiel</button>
+            </div>
         </div>
 
-        <div class="card hidden" id="links-card">
-          <h2>📱 Links verschicken</h2>
-          <p style="margin-bottom: 15px">
-            Schick jedem <strong>privat</strong> seinen Link:
-          </p>
-          <div id="player-links"></div>
-          <button class="btn btn-secondary" onclick="resetGame()">
-            ↻ Neues Spiel
-          </button>
+        <!-- PLAYER -->
+        <div id="player-section" class="hidden">
+
+            <div class="card hidden" id="error-card">
+                <h1 style="text-align:center;">❌</h1>
+                <p style="text-align:center;">Ungültiger Link</p>
+                <button class="btn btn-secondary" onclick="goHome()">Zur Startseite</button>
+            </div>
+
+            <div class="card hidden" id="reveal-card">
+                <h1 style="text-align:center;">Hey <span id="player-name-preview"></span>!</h1>
+                <p class="warning">⚠️ Zeig dein Handy niemandem!</p>
+                <button class="btn btn-reveal" onclick="showRole()">👆 Rolle aufdecken</button>
+            </div>
+
+            <div class="card hidden" id="role-card">
+                <span class="role-emoji" id="role-emoji"></span>
+                <div class="role-name" id="role-name"></div>
+                <div class="role-team" id="role-team"></div>
+
+                <div class="role-box" id="role-desc"></div>
+                <div class="role-box" id="role-action"></div>
+
+                <div class="teammates hidden" id="teammates-section">
+                    <h3>🐺 Dein Rudel</h3>
+                    <ul id="teammates-list"></ul>
+                </div>
+
+                <button class="btn btn-secondary" onclick="hideRole()">🙈 Verstecken</button>
+            </div>
         </div>
-      </div>
-
-      <!-- PLAYER -->
-      <div id="player-section" class="hidden">
-        <div class="card hidden" id="error-card">
-          <h1 style="text-align: center">❌</h1>
-          <p style="text-align: center">Ungültiger Link</p>
-          <button class="btn btn-secondary" onclick="goHome()">
-            Zur Startseite
-          </button>
-        </div>
-
-        <div class="card hidden" id="reveal-card">
-          <h1 style="text-align: center">
-            Hey <span id="player-name-preview"></span>!
-          </h1>
-          <p class="warning">⚠️ Zeig dein Handy niemandem!</p>
-          <button class="btn btn-reveal" onclick="showRole()">
-            👆 Rolle aufdecken
-          </button>
-        </div>
-
-        <div class="card hidden" id="role-card">
-          <span class="role-emoji" id="role-emoji"></span>
-          <div class="role-name" id="role-name"></div>
-          <div class="role-team" id="role-team"></div>
-
-          <div class="role-box" id="role-desc"></div>
-          <div class="role-box" id="role-action"></div>
-
-          <div class="teammates hidden" id="teammates-section">
-            <h3>🐺 Dein Rudel</h3>
-            <ul id="teammates-list"></ul>
-          </div>
-
-          <button class="btn btn-secondary" onclick="hideRole()">
-            🙈 Verstecken
-          </button>
-        </div>
-      </div>
     </div>
 
     <!-- Rules -->
     <button class="btn-rules" onclick="showRules()">📜</button>
 
-    <div
-      class="modal-overlay hidden"
-      id="rules-modal"
-      onclick="if(event.target.id==='rules-modal')closeRules()"
-    >
-      <div class="modal">
-        <div class="modal-header">
-          <h2>📜 Spielregeln</h2>
-          <button class="modal-close" onclick="closeRules()">×</button>
-        </div>
-        <div class="modal-content">
-          <h3>🎯 Ziel</h3>
-          <p><strong>Werwölfe:</strong> Tötet alle Dorfbewohner!</p>
-          <p><strong>Dorf:</strong> Findet und lyncht alle Werwölfe!</p>
+    <div class="modal-overlay hidden" id="rules-modal" onclick="if(event.target.id==='rules-modal')closeRules()">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>📜 Spielregeln</h2>
+                <button class="modal-close" onclick="closeRules()">×</button>
+            </div>
+            <div class="modal-content">
 
-          <h3>⚡ Das Besondere</h3>
-          <p>
-            Alles passiert <strong>im echten Leben</strong> - jederzeit,
-            überall. Keine App-Mechaniken, keine festen Runden!
-          </p>
+                <h3>🎯 Ziel</h3>
+                <p><strong>Werwölfe:</strong> Tötet alle Dorfbewohner!</p>
+                <p><strong>Dorf:</strong> Findet und lyncht alle Werwölfe!</p>
 
-          <div class="rule-card wolf">
-            <h3>🐺 Werwolf-Kill</h3>
-            <ul>
-              <li>Werwölfe <strong>kennen sich</strong> (App zeigt es)</li>
-              <li>Dürfen sich heimlich <strong>absprechen</strong></li>
-              <li><strong>Beide</strong> müssen das Opfer markieren</li>
-              <li>Dazu: <strong>Alleine</strong> mit dem Opfer sein</li>
-              <li>Sag: <strong>"Du bist markiert"</strong></li>
-              <li>
-                Opfer weiß wer es war,
-                <strong>darf es aber nicht verraten!</strong>
-              </li>
-              <li>Nach 2. Markierung → <strong>tot</strong></li>
-            </ul>
-          </div>
+                <h3>⚡ Das Besondere</h3>
+                <p>Alles passiert <strong>im echten Leben</strong> - jederzeit, überall!</p>
 
-          <div class="rule-card village">
-            <h3>⚖️ Lynch</h3>
-            <ul>
-              <li>Jeder kann jedem <strong>eine Stimme</strong> geben</li>
-              <li>Dazu: <strong>Alleine</strong> mit der Person sein</li>
-              <li>Sag: <strong>"Ich stimme gegen [Name]"</strong></li>
-              <li>Stimme kann <strong>geändert</strong> werden</li>
-              <li>Bei <strong>3 Stimmen</strong> → sofort tot</li>
-            </ul>
-          </div>
+                <div class="rule-card wolf">
+                    <h3>🐺 Werwolf-Kill</h3>
+                    <p>Werwölfe kennen sich und dürfen sich absprechen.</p>
 
-          <div class="rule-card special">
-            <h3>👁️ Seherin</h3>
-            <ul>
-              <li>Sei <strong>alleine</strong> mit jemandem</li>
-              <li>Sag: <strong>"Zeig mir deine Rolle"</strong></li>
-              <li>Person <strong>muss</strong> ihr Handy zeigen!</li>
-            </ul>
-          </div>
-
-          <div class="rule-card special">
-            <h3>🛡️ Leibwächter</h3>
-            <ul>
-              <li>Sei <strong>alleine</strong> mit jemandem</li>
-              <li>Sag: <strong>"Du stehst unter meinem Schutz"</strong></li>
-              <li><strong>Eine</strong> Werwolf-Markierung zählt nicht</li>
-              <li>Gilt bis du jemand anderen schützt</li>
-            </ul>
-          </div>
-
-          <div class="rule-card special">
-            <h3>🧙‍♀️ Hexe</h3>
-            <p><strong>💚 Heiltrank (1x):</strong></p>
-            <ul>
-              <li>Sei <strong>alleine</strong> mit markierter Person</li>
-              <li>Sag: <strong>"Ich heile dich"</strong></li>
-              <li>Markierung ist weg!</li>
-            </ul>
-            <p><strong>💀 Gifttrank (1x):</strong></p>
-            <ul>
-              <li>Sei <strong>alleine</strong> mit jemandem</li>
-              <li>Sag: <strong>"Gift"</strong></li>
-              <li>Person ist <strong>sofort tot!</strong></li>
-            </ul>
-          </div>
-
-          <div class="rule-card special">
-            <h3>🏹 Jäger</h3>
-            <ul>
-              <li>Wenn du stirbst und <strong>dabei bist:</strong></li>
-              <li>
-                Sag sofort:
-                <strong>"Ich bin Jäger, ich erschieße [Name]!"</strong>
-              </li>
-              <li>Diese Person stirbt auch!</li>
-            </ul>
-          </div>
-
-          <div class="rule-card village">
-            <h3>☠️ Tod & Infos</h3>
-            <ul>
-              <li>Tote dürfen <strong>nichts mehr sagen</strong></li>
-              <li>
-                Jeder darf jederzeit fragen: <strong>"Bist du tot?"</strong>
-              </li>
-              <li>Antwort muss <strong>ehrlich</strong> sein</li>
-              <li>
-                Markierte dürfen <strong>nicht verraten</strong> wer sie
-                markiert hat
-              </li>
-            </ul>
-          </div>
-
-          <h3>🏆 Spielende</h3>
-          <p>✅ <strong>Dorf gewinnt:</strong> Alle Werwölfe tot</p>
-          <p>
-            ❌ <strong>Werwölfe gewinnen:</strong> Gleich viele oder mehr als
-            Dorfbewohner
-          </p>
-
-          <h3>📊 Rollen</h3>
-          <p>
-            5 Spieler: 2🐺 1👁️ 1🛡️ 1👤<br />
-            6 Spieler: 2🐺 1👁️ 1🛡️ 2👤<br />
-            7 Spieler: 2🐺 1👁️ 1🛡️ 1🧙‍♀️ 2👤<br />
-            8 Spieler: 3🐺 1👁️ 1🛡️ 1🧙‍♀️ 2👤<br />
-            9 Spieler: 3🐺 1👁️ 1🛡️ 1🧙‍♀️ 1🏹 2👤<br />
-            10 Spieler: 3🐺 1👁️ 1🛡️ 1🧙‍♀️ 1🏹 3👤
-          </p>
-
-          <h3>💡 Tipps</h3>
-          <ul>
-            <li>
-              Sucht Gelegenheiten, mit Leuten <strong>alleine</strong> zu sein
-            </li>
-            <li>Achtet darauf, wer sich mit wem alleine trifft</li>
-            <li>Bildet Allianzen!</li>
-            <li>Werwölfe: Kommuniziert mit Blicken und Zeichen</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <script>
-      const SECRET = "Werwolf2024!";
-
-      const ROLES = {
-        werewolf: {
-          name: "Werwolf",
-          emoji: "🐺",
-          team: "evil",
-          teamName: "🐺 Team Werwolf",
-          desc: "Du bist ein Werwolf! Eliminiere die Dorfbewohner ohne entdeckt zu werden.",
-          action: `<strong>So tötest du:</strong>
+                    <p><strong>Option A - Einzeln:</strong></p>
                     <ul>
-                        <li>Sprich dich heimlich mit deinem Rudel ab</li>
-                        <li>Sei <strong>alleine</strong> mit eurem Opfer</li>
-                        <li>Sag: <strong>"Du bist markiert"</strong></li>
-                        <li>Dein Partner muss <strong>dasselbe</strong> tun</li>
-                        <li>Nach beiden Markierungen → Opfer ist tot</li>
+                        <li>Ein Werwolf ist <strong>alleine</strong> mit dem Opfer</li>
+                        <li>Sagt: <strong>"Du bist markiert"</strong></li>
+                        <li>Der andere Werwolf macht später dasselbe</li>
+                        <li>→ Nach beiden Markierungen: <strong>tot</strong></li>
                     </ul>
-                    <p>⚠️ Das Opfer weiß wer es markiert hat, darf es aber niemandem verraten!</p>`,
-        },
-        seer: {
-          name: "Seherin",
-          emoji: "👁️",
-          team: "good",
-          teamName: "🏠 Team Dorf",
-          desc: "Du kannst die wahre Identität anderer Spieler sehen!",
-          action: `<strong>So nutzt du deine Gabe:</strong>
+
+                    <div class="or-divider">— ODER —</div>
+
+                    <p><strong>Option B - Zusammen:</strong></p>
+                    <ul>
+                        <li><strong>Beide</strong> Werwölfe + Opfer im Raum</li>
+                        <li>Ohne andere Personen!</li>
+                        <li>Einer sagt: <strong>"Du bist markiert"</strong></li>
+                        <li>→ Sofort <strong>tot</strong></li>
+                    </ul>
+
+                    <p>⚠️ Opfer weiß wer, <strong>darf es aber nicht verraten!</strong></p>
+                </div>
+
+                <div class="rule-card village">
+                    <h3>⚖️ Lynch</h3>
+                    <ul>
+                        <li><strong>Mindestens 3 Personen</strong> einigen sich auf jemanden</li>
+                        <li>Der Verdächtige darf dabei sein oder nicht</li>
+                        <li>→ Diese Person ist <strong>gelyncht</strong></li>
+                    </ul>
+                </div>
+
+                <div class="rule-card special">
+                    <h3>👁️ Seherin</h3>
                     <ul>
                         <li>Sei <strong>alleine</strong> mit jemandem</li>
                         <li>Sag: <strong>"Zeig mir deine Rolle"</strong></li>
-                        <li>Die Person muss dir ihr Handy zeigen!</li>
+                        <li>Person <strong>muss</strong> ihr Handy zeigen!</li>
                     </ul>
-                    <p>💡 Vorsicht - verrätst du dich, bist du das nächste Ziel!</p>`,
-        },
-        guardian: {
-          name: "Leibwächter",
-          emoji: "🛡️",
-          team: "good",
-          teamName: "🏠 Team Dorf",
-          desc: "Du kannst andere vor den Werwölfen beschützen!",
-          action: `<strong>So beschützt du:</strong>
+                </div>
+
+                <div class="rule-card special">
+                    <h3>🛡️ Leibwächter</h3>
+                    <p><strong>Schutz geben:</strong></p>
                     <ul>
                         <li>Sei <strong>alleine</strong> mit jemandem</li>
                         <li>Sag: <strong>"Du stehst unter meinem Schutz"</strong></li>
-                        <li>Die nächste Werwolf-Markierung zählt nicht!</li>
-                        <li>Schutz gilt bis du jemand anderen schützt</li>
-                    </ul>`,
-        },
-        witch: {
-          name: "Hexe",
-          emoji: "🧙‍♀️",
-          team: "good",
-          teamName: "🏠 Team Dorf",
-          desc: "Du hast zwei mächtige Tränke - nutze sie weise!",
-          action: `<strong>💚 Heiltrank (einmalig):</strong>
-                    <ul>
-                        <li>Sei <strong>alleine</strong> mit einer markierten Person</li>
-                        <li>Sag: <strong>"Ich heile dich"</strong></li>
-                        <li>Die Markierung ist aufgehoben!</li>
+                        <li>Gilt bis du jemand anderen schützt</li>
                     </ul>
-                    <strong>💀 Gifttrank (einmalig):</strong>
+                    <p><strong>Wenn Geschützter markiert wird:</strong></p>
+                    <ul>
+                        <li>Geschützter sagt sofort: <strong>"Ist dieses Mal nicht gültig"</strong></li>
+                        <li>Markierung zählt nicht!</li>
+                        <li>Schutz ist danach verbraucht</li>
+                    </ul>
+                </div>
+
+                <div class="rule-card special">
+                    <h3>🧙‍♀️ Hexe</h3>
+                    <p><strong>💚 Heiltrank (einmalig):</strong></p>
+                    <ul>
+                        <li>Sei <strong>alleine</strong> mit markierter Person</li>
+                        <li>Sag: <strong>"Ich heile dich"</strong></li>
+                        <li>Markierung aufgehoben!</li>
+                    </ul>
+                    <p><strong>💀 Gifttrank (einmalig):</strong></p>
                     <ul>
                         <li>Sei <strong>alleine</strong> mit jemandem</li>
                         <li>Sag: <strong>"Gift"</strong></li>
-                        <li>Diese Person ist sofort tot!</li>
-                    </ul>`,
-        },
-        hunter: {
-          name: "Jäger",
-          emoji: "🏹",
-          team: "good",
-          teamName: "🏠 Team Dorf",
-          desc: "Wenn du stirbst, nimmst du jemanden mit!",
-          action: `<strong>Deine letzte Kugel:</strong>
+                        <li>Sofort <strong>tot!</strong></li>
+                    </ul>
+                </div>
+
+                <div class="rule-card special">
+                    <h3>🏹 Jäger</h3>
                     <ul>
                         <li>Wenn du stirbst und <strong>dabei bist:</strong></li>
                         <li>Sag sofort: <strong>"Ich bin Jäger, ich erschieße [Name]!"</strong></li>
                         <li>Diese Person stirbt auch!</li>
                     </ul>
-                    <p>💡 Überlege dir jetzt schon, wen du mitnehmen würdest!</p>`,
-        },
-        villager: {
-          name: "Dorfbewohner",
-          emoji: "👤",
-          team: "good",
-          teamName: "🏠 Team Dorf",
-          desc: "Ein einfacher Dorfbewohner - aber deine Stimme zählt!",
-          action: `<strong>So lyncht ihr:</strong>
+                </div>
+
+                <div class="rule-card village">
+                    <h3>☠️ Tod & Infos</h3>
+                    <ul>
+                        <li>Tote dürfen <strong>nichts mehr sagen</strong></li>
+                        <li>Jeder darf fragen: <strong>"Bist du tot?"</strong></li>
+                        <li>Antwort muss <strong>ehrlich</strong> sein</li>
+                        <li>Markierte dürfen <strong>nicht verraten</strong> wer</li>
+                    </ul>
+                </div>
+
+                <h3>🏆 Spielende</h3>
+                <p>✅ <strong>Dorf gewinnt:</strong> Alle Werwölfe tot</p>
+                <p>❌ <strong>Werwölfe gewinnen:</strong> Gleich viele oder mehr als Dorf</p>
+
+                <h3>📊 Rollen</h3>
+                <p>
+                    5 Spieler: 2🐺 1👁️ 1🛡️ 1👤<br>
+                    6 Spieler: 2🐺 1👁️ 1🛡️ 2👤<br>
+                    7 Spieler: 2🐺 1👁️ 1🛡️ 1🧙‍♀️ 2👤<br>
+                    8 Spieler: 3🐺 1👁️ 1🛡️ 1🧙‍♀️ 2👤<br>
+                    9 Spieler: 3🐺 1👁️ 1🛡️ 1🧙‍♀️ 1🏹 2👤<br>
+                    10 Spieler: 3🐺 1👁️ 1🛡️ 1🧙‍♀️ 1🏹 3👤
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SECRET = 'Werwolf2024!';
+
+        const ROLES = {
+            werewolf: {
+                name: 'Werwolf',
+                emoji: '🐺',
+                team: 'evil',
+                teamName: '🐺 Team Werwolf',
+                desc: 'Du bist ein Werwolf! Eliminiere die Dorfbewohner ohne entdeckt zu werden.',
+                action: `<strong>So tötest du:</strong>
+
+                    <p><strong>Option A - Einzeln:</strong></p>
+                    <ul>
+                        <li>Sei <strong>alleine</strong> mit dem Opfer</li>
+                        <li>Sag: <strong>"Du bist markiert"</strong></li>
+                        <li>Dein Partner macht später dasselbe</li>
+                        <li>→ Nach beiden Markierungen: tot</li>
+                    </ul>
+
+                    <p style="text-align:center; color:#f39c12; font-weight:bold;">— ODER —</p>
+
+                    <p><strong>Option B - Zusammen:</strong></p>
+                    <ul>
+                        <li><strong>Beide</strong> Werwölfe + Opfer im Raum</li>
+                        <li>Ohne andere Personen!</li>
+                        <li>Sag: <strong>"Du bist markiert"</strong></li>
+                        <li>→ Sofort tot!</li>
+                    </ul>
+
+                    <p>⚠️ Opfer weiß wer, darf es aber niemandem verraten!</p>`
+            },
+            seer: {
+                name: 'Seherin',
+                emoji: '👁️',
+                team: 'good',
+                teamName: '🏠 Team Dorf',
+                desc: 'Du kannst die wahre Identität anderer sehen!',
+                action: `<strong>So nutzt du deine Gabe:</strong>
                     <ul>
                         <li>Sei <strong>alleine</strong> mit jemandem</li>
-                        <li>Sag: <strong>"Ich stimme gegen [Name]"</strong></li>
-                        <li>Bei <strong>3 Stimmen</strong> → Person ist tot!</li>
-                        <li>Du kannst deine Stimme jederzeit ändern</li>
+                        <li>Sag: <strong>"Zeig mir deine Rolle"</strong></li>
+                        <li>Person muss dir ihr Handy zeigen!</li>
                     </ul>
-                    <p>💡 Beobachte, wer sich mit wem trifft!</p>`,
-        },
-      };
-
-      function getRoles(n) {
-        return (
-          {
-            5: ["werewolf", "werewolf", "seer", "guardian", "villager"],
-            6: [
-              "werewolf",
-              "werewolf",
-              "seer",
-              "guardian",
-              "villager",
-              "villager",
-            ],
-            7: [
-              "werewolf",
-              "werewolf",
-              "seer",
-              "guardian",
-              "witch",
-              "villager",
-              "villager",
-            ],
-            8: [
-              "werewolf",
-              "werewolf",
-              "werewolf",
-              "seer",
-              "guardian",
-              "witch",
-              "villager",
-              "villager",
-            ],
-            9: [
-              "werewolf",
-              "werewolf",
-              "werewolf",
-              "seer",
-              "guardian",
-              "witch",
-              "hunter",
-              "villager",
-              "villager",
-            ],
-            10: [
-              "werewolf",
-              "werewolf",
-              "werewolf",
-              "seer",
-              "guardian",
-              "witch",
-              "hunter",
-              "villager",
-              "villager",
-              "villager",
-            ],
-          }[n] || []
-        );
-      }
-
-      const Crypto = {
-        async key(pw) {
-          const e = new TextEncoder();
-          const k = await crypto.subtle.importKey(
-            "raw",
-            e.encode(pw),
-            "PBKDF2",
-            false,
-            ["deriveKey"]
-          );
-          return crypto.subtle.deriveKey(
-            {
-              name: "PBKDF2",
-              salt: e.encode("werwolf"),
-              iterations: 100000,
-              hash: "SHA-256",
+                    <p>💡 Vorsicht - verrätst du dich, bist du das nächste Ziel!</p>`
             },
-            k,
-            { name: "AES-GCM", length: 256 },
-            false,
-            ["encrypt", "decrypt"]
-          );
-        },
-        async enc(data, pw) {
-          const k = await this.key(pw);
-          const iv = crypto.getRandomValues(new Uint8Array(12));
-          const enc = await crypto.subtle.encrypt(
-            { name: "AES-GCM", iv },
-            k,
-            new TextEncoder().encode(JSON.stringify(data))
-          );
-          const c = new Uint8Array(iv.length + enc.byteLength);
-          c.set(iv);
-          c.set(new Uint8Array(enc), iv.length);
-          return btoa(String.fromCharCode(...c))
-            .replace(/\+/g, "-")
-            .replace(/\//g, "_")
-            .replace(/=/g, "");
-        },
-        async dec(str, pw) {
-          try {
-            const k = await this.key(pw);
-            let b = str.replace(/-/g, "+").replace(/_/g, "/");
-            while (b.length % 4) b += "=";
-            const c = Uint8Array.from(atob(b), (x) => x.charCodeAt(0));
-            const dec = await crypto.subtle.decrypt(
-              { name: "AES-GCM", iv: c.slice(0, 12) },
-              k,
-              c.slice(12)
-            );
-            return JSON.parse(new TextDecoder().decode(dec));
-          } catch {
-            return null;
-          }
-        },
-      };
+            guardian: {
+                name: 'Leibwächter',
+                emoji: '🛡️',
+                team: 'good',
+                teamName: '🏠 Team Dorf',
+                desc: 'Du kannst andere vor den Werwölfen beschützen!',
+                action: `<strong>Schutz geben:</strong>
+                    <ul>
+                        <li>Sei <strong>alleine</strong> mit jemandem</li>
+                        <li>Sag: <strong>"Du stehst unter meinem Schutz"</strong></li>
+                        <li>Gilt bis du jemand anderen schützt</li>
+                    </ul>
 
-      function toast(msg, ok = false) {
-        const t = document.createElement("div");
-        t.className = "toast";
-        t.style.background = ok ? "#27ae60" : "#e74c3c";
-        t.textContent = msg;
-        document.body.appendChild(t);
-        setTimeout(() => {
-          t.style.opacity = "0";
-          setTimeout(() => t.remove(), 300);
-        }, 2500);
-      }
+                    <p><strong>Wenn dein Schützling markiert wird:</strong></p>
+                    <ul>
+                        <li>Er sagt sofort: <strong>"Ist dieses Mal nicht gültig"</strong></li>
+                        <li>Markierung zählt nicht!</li>
+                        <li>Schutz ist danach verbraucht</li>
+                    </ul>`
+            },
+            witch: {
+                name: 'Hexe',
+                emoji: '🧙‍♀️',
+                team: 'good',
+                teamName: '🏠 Team Dorf',
+                desc: 'Du hast zwei mächtige Tränke!',
+                action: `<strong>💚 Heiltrank (einmalig):</strong>
+                    <ul>
+                        <li>Sei <strong>alleine</strong> mit markierter Person</li>
+                        <li>Sag: <strong>"Ich heile dich"</strong></li>
+                        <li>Markierung aufgehoben!</li>
+                    </ul>
 
-      function showRules() {
-        document.getElementById("rules-modal").classList.remove("hidden");
-      }
-      function closeRules() {
-        document.getElementById("rules-modal").classList.add("hidden");
-      }
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeRules();
-      });
+                    <strong>💀 Gifttrank (einmalig):</strong>
+                    <ul>
+                        <li>Sei <strong>alleine</strong> mit jemandem</li>
+                        <li>Sag: <strong>"Gift"</strong></li>
+                        <li>Sofort tot!</li>
+                    </ul>`
+            },
+            hunter: {
+                name: 'Jäger',
+                emoji: '🏹',
+                team: 'good',
+                teamName: '🏠 Team Dorf',
+                desc: 'Wenn du stirbst, nimmst du jemanden mit!',
+                action: `<strong>Deine letzte Kugel:</strong>
+                    <ul>
+                        <li>Wenn du stirbst und <strong>dabei bist:</strong></li>
+                        <li>Sag sofort: <strong>"Ich bin Jäger, ich erschieße [Name]!"</strong></li>
+                        <li>Diese Person stirbt auch!</li>
+                    </ul>
+                    <p>💡 Überlege dir jetzt schon, wen du mitnehmen würdest!</p>`
+            },
+            villager: {
+                name: 'Dorfbewohner',
+                emoji: '👤',
+                team: 'good',
+                teamName: '🏠 Team Dorf',
+                desc: 'Ein einfacher Dorfbewohner - aber deine Stimme zählt!',
+                action: `<strong>So lyncht ihr:</strong>
+                    <ul>
+                        <li><strong>Mindestens 3 Personen</strong> einigen sich</li>
+                        <li>Auf dieselbe Person</li>
+                        <li>Verdächtiger darf dabei sein oder nicht</li>
+                        <li>→ Diese Person ist gelyncht!</li>
+                    </ul>
+                    <p>💡 Beobachte, wer sich mit wem trifft!</p>`
+            }
+        };
 
-      async function createGame() {
-        const text = document.getElementById("player-names").value.trim();
-        if (!text) return toast("Namen eingeben!");
-
-        const names = text
-          .split("\n")
-          .map((n) => n.trim())
-          .filter((n) => n);
-        if (names.length < 5) return toast("Mindestens 5 Spieler!");
-        if (names.length > 10) return toast("Maximal 10 Spieler!");
-        if (new Set(names.map((n) => n.toLowerCase())).size !== names.length)
-          return toast("Keine doppelten Namen!");
-
-        const roles = getRoles(names.length);
-        for (let i = roles.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [roles[i], roles[j]] = [roles[j], roles[i]];
+        function getRoles(n) {
+            return {
+                5: ['werewolf','werewolf','seer','guardian','villager'],
+                6: ['werewolf','werewolf','seer','guardian','villager','villager'],
+                7: ['werewolf','werewolf','seer','guardian','witch','villager','villager'],
+                8: ['werewolf','werewolf','werewolf','seer','guardian','witch','villager','villager'],
+                9: ['werewolf','werewolf','werewolf','seer','guardian','witch','hunter','villager','villager'],
+                10: ['werewolf','werewolf','werewolf','seer','guardian','witch','hunter','villager','villager','villager']
+            }[n] || [];
         }
 
-        const players = names.map((name, i) => ({ name, role: roles[i] }));
-        const wolves = players
-          .filter((p) => p.role === "werewolf")
-          .map((p) => p.name);
+        const Crypto = {
+            async key(pw) {
+                const e = new TextEncoder();
+                const k = await crypto.subtle.importKey('raw', e.encode(pw), 'PBKDF2', false, ['deriveKey']);
+                return crypto.subtle.deriveKey({name:'PBKDF2', salt:e.encode('werwolf'), iterations:100000, hash:'SHA-256'}, k, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']);
+            },
+            async enc(data, pw) {
+                const k = await this.key(pw);
+                const iv = crypto.getRandomValues(new Uint8Array(12));
+                const enc = await crypto.subtle.encrypt({name:'AES-GCM', iv}, k, new TextEncoder().encode(JSON.stringify(data)));
+                const c = new Uint8Array(iv.length + enc.byteLength);
+                c.set(iv); c.set(new Uint8Array(enc), iv.length);
+                return btoa(String.fromCharCode(...c)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');
+            },
+            async dec(str, pw) {
+                try {
+                    const k = await this.key(pw);
+                    let b = str.replace(/-/g,'+').replace(/_/g,'/');
+                    while(b.length % 4) b += '=';
+                    const c = Uint8Array.from(atob(b), x => x.charCodeAt(0));
+                    const dec = await crypto.subtle.decrypt({name:'AES-GCM', iv:c.slice(0,12)}, k, c.slice(12));
+                    return JSON.parse(new TextDecoder().decode(dec));
+                } catch { return null; }
+            }
+        };
 
-        const container = document.getElementById("player-links");
-        container.innerHTML = "";
+        function toast(msg, ok=false) {
+            document.querySelectorAll('.toast').forEach(t => t.remove());
+            const t = document.createElement('div');
+            t.className = 'toast';
+            t.style.background = ok ? '#27ae60' : '#e74c3c';
+            t.textContent = msg;
+            document.body.appendChild(t);
+            setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 2500);
+        }
 
-        const base = location.href.split("?")[0].split("#")[0];
+        function showRules() { document.getElementById('rules-modal').classList.remove('hidden'); }
+        function closeRules() { document.getElementById('rules-modal').classList.add('hidden'); }
+        document.addEventListener('keydown', e => { if(e.key==='Escape') closeRules(); });
 
-        for (const p of players) {
-          const data = {
-            name: p.name,
-            role: p.role,
-            wolves: p.role === "werewolf" ? wolves : [],
-          };
-          const enc = await Crypto.enc(data, SECRET);
-          const link = `${base}?p=${enc}`;
+        async function createGame() {
+            const text = document.getElementById('player-names').value.trim();
+            if (!text) return toast('Namen eingeben!');
 
-          container.innerHTML += `
+            const names = text.split('\n').map(n => n.trim()).filter(n => n);
+            if (names.length < 5) return toast('Mindestens 5 Spieler!');
+            if (names.length > 10) return toast('Maximal 10 Spieler!');
+            if (new Set(names.map(n => n.toLowerCase())).size !== names.length) return toast('Keine doppelten Namen!');
+
+            const roles = getRoles(names.length);
+            for (let i = roles.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [roles[i], roles[j]] = [roles[j], roles[i]];
+            }
+
+            const players = names.map((name, i) => ({ name, role: roles[i] }));
+            const wolves = players.filter(p => p.role === 'werewolf').map(p => p.name);
+
+            const container = document.getElementById('player-links');
+            container.innerHTML = '';
+
+            const base = location.href.split('?')[0].split('#')[0];
+
+            for (const p of players) {
+                const data = { name: p.name, role: p.role, wolves: p.role === 'werewolf' ? wolves : [] };
+                const enc = await Crypto.enc(data, SECRET);
+                const link = `${base}?p=${enc}`;
+
+                container.innerHTML += `
                     <div class="player-link">
                         <span class="player-link-name">${p.name}</span>
                         <button class="btn-copy" onclick="copy(this,'${link}')">📋 Link</button>
                     </div>`;
+            }
+
+            const count = {};
+            players.forEach(p => { const e = ROLES[p.role].emoji; count[e] = (count[e]||0) + 1; });
+            container.innerHTML += `<div class="info-box"><strong>Rollen:</strong> ${Object.entries(count).map(([e,c]) => c+e).join(' ')}</div>`;
+
+            document.getElementById('setup-card').classList.add('hidden');
+            document.getElementById('links-card').classList.remove('hidden');
+            toast('✅ Fertig!', true);
         }
 
-        const count = {};
-        players.forEach((p) => {
-          const e = ROLES[p.role].emoji;
-          count[e] = (count[e] || 0) + 1;
+        function copy(btn, link) {
+            navigator.clipboard.writeText(link).catch(() => {
+                const t = document.createElement('textarea');
+                t.value = link; t.style.cssText = 'position:fixed;opacity:0';
+                document.body.appendChild(t); t.select();
+                document.execCommand('copy');
+                document.body.removeChild(t);
+            });
+            btn.textContent = '✓';
+            btn.classList.add('copied');
+            setTimeout(() => { btn.textContent = '📋 Link'; btn.classList.remove('copied'); }, 2000);
+        }
+
+        function resetGame() {
+            document.getElementById('setup-card').classList.remove('hidden');
+            document.getElementById('links-card').classList.add('hidden');
+            document.getElementById('player-names').value = '';
+        }
+
+        function goHome() { location.href = location.pathname; }
+
+        let data = null;
+
+        function showRole() {
+            if (!data) return;
+            const r = ROLES[data.role];
+
+            document.getElementById('role-emoji').textContent = r.emoji;
+            document.getElementById('role-name').textContent = r.name;
+
+            const team = document.getElementById('role-team');
+            team.textContent = r.teamName;
+            team.className = 'role-team ' + r.team;
+
+            document.getElementById('role-desc').innerHTML = `<p>${r.desc}</p>`;
+            document.getElementById('role-action').innerHTML = r.action;
+
+            if (data.role === 'werewolf' && data.wolves?.length > 1) {
+                const others = data.wolves.filter(n => n !== data.name);
+                document.getElementById('teammates-list').innerHTML = others.map(n => `<li>🐺 ${n}</li>`).join('');
+                document.getElementById('teammates-section').classList.remove('hidden');
+            }
+
+            document.getElementById('reveal-card').classList.add('hidden');
+            document.getElementById('role-card').classList.remove('hidden');
+        }
+
+        function hideRole() {
+            document.getElementById('role-card').classList.add('hidden');
+            document.getElementById('reveal-card').classList.remove('hidden');
+            document.getElementById('teammates-section').classList.add('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const p = new URLSearchParams(location.search).get('p');
+
+            if (p) {
+                document.getElementById('admin-section').classList.add('hidden');
+                document.getElementById('player-section').classList.remove('hidden');
+
+                data = await Crypto.dec(p, SECRET);
+
+                if (!data) {
+                    document.getElementById('error-card').classList.remove('hidden');
+                    return;
+                }
+
+                document.getElementById('reveal-card').classList.remove('hidden');
+                document.getElementById('player-name-preview').textContent = data.name;
+            }
         });
-        container.innerHTML += `<div class="info-box"><strong>Rollen:</strong> ${Object.entries(
-          count
-        )
-          .map(([e, c]) => c + e)
-          .join(" ")}</div>`;
-
-        document.getElementById("setup-card").classList.add("hidden");
-        document.getElementById("links-card").classList.remove("hidden");
-        toast("✅ Fertig!", true);
-      }
-
-      function copy(btn, link) {
-        navigator.clipboard.writeText(link).catch(() => {
-          const t = document.createElement("textarea");
-          t.value = link;
-          t.style.cssText = "position:fixed;opacity:0";
-          document.body.appendChild(t);
-          t.select();
-          document.execCommand("copy");
-          document.body.removeChild(t);
-        });
-        btn.textContent = "✓";
-        btn.classList.add("copied");
-        setTimeout(() => {
-          btn.textContent = "📋 Link";
-          btn.classList.remove("copied");
-        }, 2000);
-      }
-
-      function resetGame() {
-        document.getElementById("setup-card").classList.remove("hidden");
-        document.getElementById("links-card").classList.add("hidden");
-        document.getElementById("player-names").value = "";
-      }
-
-      function goHome() {
-        location.href = location.pathname;
-      }
-
-      let data = null;
-
-      function showRole() {
-        if (!data) return;
-        const r = ROLES[data.role];
-
-        document.getElementById("role-emoji").textContent = r.emoji;
-        document.getElementById("role-name").textContent = r.name;
-
-        const team = document.getElementById("role-team");
-        team.textContent = r.teamName;
-        team.className = "role-team " + r.team;
-
-        document.getElementById("role-desc").innerHTML = `<p>${r.desc}</p>`;
-        document.getElementById("role-action").innerHTML = r.action;
-
-        if (data.role === "werewolf" && data.wolves?.length > 1) {
-          const others = data.wolves.filter((n) => n !== data.name);
-          document.getElementById("teammates-list").innerHTML = others
-            .map((n) => `<li>🐺 ${n}</li>`)
-            .join("");
-          document
-            .getElementById("teammates-section")
-            .classList.remove("hidden");
-        }
-
-        document.getElementById("reveal-card").classList.add("hidden");
-        document.getElementById("role-card").classList.remove("hidden");
-      }
-
-      function hideRole() {
-        document.getElementById("role-card").classList.add("hidden");
-        document.getElementById("reveal-card").classList.remove("hidden");
-        document.getElementById("teammates-section").classList.add("hidden");
-      }
-
-      document.addEventListener("DOMContentLoaded", async () => {
-        const p = new URLSearchParams(location.search).get("p");
-
-        if (p) {
-          document.getElementById("admin-section").classList.add("hidden");
-          document.getElementById("player-section").classList.remove("hidden");
-
-          data = await Crypto.dec(p, SECRET);
-
-          if (!data) {
-            document.getElementById("error-card").classList.remove("hidden");
-            return;
-          }
-
-          document.getElementById("reveal-card").classList.remove("hidden");
-          document.getElementById("player-name-preview").textContent =
-            data.name;
-        }
-      });
     </script>
-  </body>
+</body>
 </html>
