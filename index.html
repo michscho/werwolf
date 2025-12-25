@@ -1,4 +1,19 @@
-<!DOCTYPE html>
+
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+							<style>
+								body {
+									background-color: white; /* Ensure the iframe has a white background */
+								}
+
+
+							</style>
+                        </head>
+                        <body>
+                            <!DOCTYPE html>
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
@@ -281,7 +296,7 @@
         font-size: 0.95rem;
         border: 1px solid rgba(108, 99, 255, 0.2);
       }
-      /* Rules Button - verbessert */
+      /* Rules Button */
       .rules-hint {
         position: fixed;
         bottom: 20px;
@@ -454,7 +469,7 @@
         z-index: 9999;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
       }
-      /* Update Banner - komplett neu */
+      /* Update Banner */
       .update-banner {
         background: linear-gradient(135deg, #1e1e3f 0%, #2d2d5a 100%);
         border-radius: 20px;
@@ -667,6 +682,119 @@
           transform: translateY(0);
         }
       }
+      /* Card Flip Animation */
+      .card-flip-container {
+        perspective: 1000px;
+      }
+      .card-flip-inner {
+        position: relative;
+        transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transform-style: preserve-3d;
+      }
+      .card-flip-inner.flipping {
+        animation: flipReveal 1s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+          forwards;
+      }
+      @keyframes flipReveal {
+        0% {
+          transform: rotateY(0deg) scale(1);
+        }
+        50% {
+          transform: rotateY(180deg) scale(1.1);
+        }
+        100% {
+          transform: rotateY(360deg) scale(1);
+        }
+      }
+      /* Glow effect during flip */
+      .card.revealing {
+        animation: glowPulse 1s ease-out;
+      }
+      @keyframes glowPulse {
+        0% {
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        50% {
+          box-shadow: 0 0 60px rgba(108, 99, 255, 0.8),
+            0 0 100px rgba(108, 99, 255, 0.4);
+        }
+        100% {
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+      }
+      /* Role reveal animation */
+      .role-reveal-enter {
+        animation: roleRevealIn 0.6s ease-out 0.4s both;
+      }
+      @keyframes roleRevealIn {
+        0% {
+          opacity: 0;
+          transform: scale(0.8) translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+      /* Emoji bounce on reveal */
+      .role-emoji.bouncing {
+        animation: emojiBounce 0.6s ease-out 0.5s both;
+      }
+      @keyframes emojiBounce {
+        0% {
+          transform: scale(0) rotate(-180deg);
+          opacity: 0;
+        }
+        50% {
+          transform: scale(1.3) rotate(10deg);
+        }
+        70% {
+          transform: scale(0.9) rotate(-5deg);
+        }
+        100% {
+          transform: scale(1) rotate(0deg);
+          opacity: 1;
+        }
+      }
+      /* Sparkle effect */
+      .sparkle-container {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        border-radius: 24px;
+      }
+      .sparkle {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: #fff;
+        border-radius: 50%;
+        animation: sparkle 1s ease-out forwards;
+      }
+      @keyframes sparkle {
+        0% {
+          transform: scale(0) translate(0, 0);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1) translate(var(--tx), var(--ty));
+          opacity: 0;
+        }
+      }
+      /* Update Banner Compact for Player View */
+      .update-banner.compact {
+        margin-bottom: 20px;
+      }
+      .update-banner.compact .update-banner-content {
+        padding: 16px;
+      }
+      .update-banner.compact .update-item {
+        padding: 8px 0;
+      }
+      .update-banner.compact .update-item-desc {
+        display: none;
+      }
     </style>
     <link
       rel="manifest"
@@ -684,7 +812,7 @@
     <div class="glow-orb glow-orb-1"></div>
     <div class="glow-orb glow-orb-2"></div>
     <div class="container">
-      <!-- Update Banner -->
+      <!-- Update Banner (shown on both admin and player screens) -->
       <div class="update-banner" id="update-banner">
         <div class="update-banner-header">
           <div class="update-banner-badge">
@@ -787,16 +915,21 @@ Ben"
           </button>
         </div>
         <div class="card hidden" id="reveal-card">
-          <h1 style="text-align: center; font-size: 1.8rem">
-            Hey <span id="player-name-preview" style="color: #6c63ff"></span>!
-            👋
-          </h1>
-          <p class="warning">⚠️ Zeig dein Handy niemandem!</p>
-          <button class="btn btn-reveal" onclick="showRole()">
-            👆 Tippe um deine Rolle zu sehen
-          </button>
+          <div class="card-flip-container">
+            <div class="card-flip-inner" id="card-flip-inner">
+              <h1 style="text-align: center; font-size: 1.8rem">
+                Hey <span id="player-name-preview" style="color: #6c63ff"></span
+                >! 👋
+              </h1>
+              <p class="warning">⚠️ Zeig dein Handy niemandem!</p>
+              <button class="btn btn-reveal" onclick="showRole()">
+                👆 Tippe um deine Rolle zu sehen
+              </button>
+            </div>
+          </div>
         </div>
         <div class="card hidden" id="role-card">
+          <div class="sparkle-container" id="sparkle-container"></div>
           <span class="role-emoji" id="role-emoji"></span>
           <div class="role-name" id="role-name"></div>
           <div class="role-team" id="role-team"></div>
@@ -992,6 +1125,8 @@ Ben"
                     </ul>
                     <p>⚠️ Opfer weiß wer, darf es aber niemandem verraten!</p>
                     <p style="margin-top:15px; padding:12px; background:rgba(231,76,60,0.2); border-radius:10px;">💡 Du bist der <strong>einzige Werwolf</strong> - sei besonders vorsichtig und strategisch!</p>`,
+          descSolo:
+            "Du bist der einzige Werwolf! Eliminiere die Dorfbewohner ohne entdeckt zu werden. Du hast keine Verbündeten - vertraue niemandem!",
         },
         seer: {
           name: "Seherin",
@@ -1077,6 +1212,7 @@ Ben"
                     <p style="margin-top:15px; padding:12px; background:rgba(108,99,255,0.2); border-radius:10px;">💡 Beobachte genau, wer sich mit wem heimlich trifft!</p>`,
         },
       };
+
       function getRoles(n) {
         return (
           {
@@ -1134,6 +1270,7 @@ Ben"
           }[n] || []
         );
       }
+
       const Crypto = {
         async key(pw) {
           const e = new TextEncoder();
@@ -1190,6 +1327,7 @@ Ben"
           }
         },
       };
+
       function toast(msg, ok = false) {
         document.querySelectorAll(".toast").forEach((t) => t.remove());
         const t = document.createElement("div");
@@ -1204,17 +1342,21 @@ Ben"
           setTimeout(() => t.remove(), 300);
         }, 2500);
       }
+
       function showRules() {
         document.getElementById("rules-modal").classList.remove("hidden");
         document.getElementById("first-time-hint").classList.add("hidden");
         localStorage.setItem("rulesShown", "true");
       }
+
       function closeRules() {
         document.getElementById("rules-modal").classList.add("hidden");
       }
+
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") closeRules();
       });
+
       // Update Banner
       function closeUpdateBanner() {
         const banner = document.getElementById("update-banner");
@@ -1224,6 +1366,21 @@ Ben"
         setTimeout(() => banner.classList.add("hidden"), 300);
         localStorage.setItem("updateBannerClosed", "v2.0");
       }
+
+      // Check if update banner should be shown
+      function checkUpdateBanner(isPlayerView = false) {
+        const banner = document.getElementById("update-banner");
+        if (localStorage.getItem("updateBannerClosed") === "v2.0") {
+          banner.classList.add("hidden");
+        } else {
+          banner.classList.remove("hidden");
+          // Add compact class for player view
+          if (isPlayerView) {
+            banner.classList.add("compact");
+          }
+        }
+      }
+
       // PWA Install
       let deferredPrompt = null;
       window.addEventListener("beforeinstallprompt", (e) => {
@@ -1231,6 +1388,7 @@ Ben"
         deferredPrompt = e;
         document.getElementById("install-banner").classList.remove("hidden");
       });
+
       function installApp() {
         if (deferredPrompt) {
           deferredPrompt.prompt();
@@ -1248,38 +1406,45 @@ Ben"
           }
         }
       }
+
       // Init
       document.addEventListener("DOMContentLoaded", async () => {
-        // Check banners
-        if (localStorage.getItem("updateBannerClosed") === "v2.0") {
-          document.getElementById("update-banner").classList.add("hidden");
-        }
-        // Show first time hint
-        if (!localStorage.getItem("rulesShown")) {
-          setTimeout(() => {
-            document
-              .getElementById("first-time-hint")
-              .classList.remove("hidden");
-          }, 2000);
-        }
         // Check for player link
         const p = new URLSearchParams(location.search).get("p");
         if (p) {
+          // Player view
           document.getElementById("admin-section").classList.add("hidden");
           document.getElementById("player-section").classList.remove("hidden");
-          document.getElementById("update-banner").classList.add("hidden");
           document.getElementById("install-banner").classList.add("hidden");
           document.getElementById("first-time-hint").classList.add("hidden");
+
+          // Show update banner for player view (compact version)
+          checkUpdateBanner(true);
+
           data = await Crypto.dec(p, SECRET);
           if (!data) {
             document.getElementById("error-card").classList.remove("hidden");
+            document.getElementById("update-banner").classList.add("hidden");
             return;
           }
           document.getElementById("reveal-card").classList.remove("hidden");
           document.getElementById("player-name-preview").textContent =
             data.name;
+        } else {
+          // Admin view
+          checkUpdateBanner(false);
+
+          // Show first time hint
+          if (!localStorage.getItem("rulesShown")) {
+            setTimeout(() => {
+              document
+                .getElementById("first-time-hint")
+                .classList.remove("hidden");
+            }, 2000);
+          }
         }
       });
+
       async function createGame() {
         const text = document.getElementById("player-names").value.trim();
         if (!text) return toast("Bitte Namen eingeben!");
@@ -1332,17 +1497,13 @@ Ben"
         document.getElementById("links-card").classList.remove("hidden");
         toast("✅ Spiel erstellt!", true);
       }
+
       function copy(btn, link, playerName) {
-        // Einladungstext mit dem Link
         const inviteText = `🐺 Ein neues Werwolf-Spiel hat begonnen!
-
 Hey ${playerName}, du wurdest zu einer Runde Werwolf eingeladen! 🎭
-
 Öffne diesen Link um deine geheime Rolle zu sehen:
 ${link}
-
 ⚠️ Zeig diesen Link niemandem - er ist nur für dich!`;
-
         navigator.clipboard.writeText(inviteText).catch(() => {
           const t = document.createElement("textarea");
           t.value = inviteText;
@@ -1359,46 +1520,139 @@ ${link}
           btn.classList.remove("copied");
         }, 2000);
       }
+
       function resetGame() {
         document.getElementById("setup-card").classList.remove("hidden");
         document.getElementById("links-card").classList.add("hidden");
         document.getElementById("player-names").value = "";
       }
+
       function goHome() {
         location.href = location.pathname;
       }
+
       let data = null;
+
+      // Sparkle effect function
+      function createSparkles() {
+        const container = document.getElementById("sparkle-container");
+        container.innerHTML = "";
+
+        for (let i = 0; i < 20; i++) {
+          const sparkle = document.createElement("div");
+          sparkle.className = "sparkle";
+          sparkle.style.left = Math.random() * 100 + "%";
+          sparkle.style.top = Math.random() * 100 + "%";
+          sparkle.style.setProperty("--tx", (Math.random() - 0.5) * 200 + "px");
+          sparkle.style.setProperty("--ty", (Math.random() - 0.5) * 200 + "px");
+          sparkle.style.animationDelay = Math.random() * 0.5 + "s";
+          sparkle.style.background =
+            Math.random() > 0.5
+              ? "#6c63ff"
+              : Math.random() > 0.5
+              ? "#fff"
+              : "#f39c12";
+          container.appendChild(sparkle);
+        }
+      }
+
       function showRole() {
         if (!data) return;
-        const r = ROLES[data.role];
-        document.getElementById("role-emoji").textContent = r.emoji;
-        document.getElementById("role-name").textContent = r.name;
-        const team = document.getElementById("role-team");
-        team.textContent = r.teamName;
-        team.className = "role-team " + r.team;
-        document.getElementById("role-desc").innerHTML = `<p>${r.desc}</p>`;
-        if (data.soloWolf && r.actionSolo) {
-          document.getElementById("role-action").innerHTML = r.actionSolo;
-        } else {
-          document.getElementById("role-action").innerHTML = r.action;
-        }
-        if (data.role === "werewolf" && data.wolves?.length > 1) {
-          const others = data.wolves.filter((n) => n !== data.name);
-          document.getElementById("teammates-list").innerHTML = others
-            .map((n) => `<li>🐺 ${n}</li>`)
-            .join("");
-          document
-            .getElementById("teammates-section")
-            .classList.remove("hidden");
-        }
-        document.getElementById("reveal-card").classList.add("hidden");
-        document.getElementById("role-card").classList.remove("hidden");
+
+        const revealCard = document.getElementById("reveal-card");
+        const roleCard = document.getElementById("role-card");
+        const flipInner = document.getElementById("card-flip-inner");
+
+        // Start flip animation
+        flipInner.classList.add("flipping");
+        revealCard.classList.add("revealing");
+
+        // After flip animation, show role card
+        setTimeout(() => {
+          const r = ROLES[data.role];
+
+          // Set emoji with animation class
+          const emojiEl = document.getElementById("role-emoji");
+          emojiEl.textContent = r.emoji;
+          emojiEl.classList.add("bouncing");
+
+          document.getElementById("role-name").textContent = r.name;
+
+          const team = document.getElementById("role-team");
+          team.textContent = r.teamName;
+          team.className = "role-team " + r.team;
+
+          // Use solo description if applicable
+          if (data.soloWolf && r.descSolo) {
+            document.getElementById(
+              "role-desc"
+            ).innerHTML = `<p>${r.descSolo}</p>`;
+          } else {
+            document.getElementById("role-desc").innerHTML = `<p>${r.desc}</p>`;
+          }
+
+          // Use solo action if applicable
+          if (data.soloWolf && r.actionSolo) {
+            document.getElementById("role-action").innerHTML = r.actionSolo;
+          } else {
+            document.getElementById("role-action").innerHTML = r.action;
+          }
+
+          // Only show teammates section if there are multiple wolves AND this is a wolf
+          if (
+            data.role === "werewolf" &&
+            data.wolves &&
+            data.wolves.length > 1
+          ) {
+            const others = data.wolves.filter((n) => n !== data.name);
+            if (others.length > 0) {
+              document.getElementById("teammates-list").innerHTML = others
+                .map((n) => `<li>🐺 ${n}</li>`)
+                .join("");
+              document
+                .getElementById("teammates-section")
+                .classList.remove("hidden");
+            }
+          } else {
+            // Hide teammates section for solo wolf or non-wolves
+            document
+              .getElementById("teammates-section")
+              .classList.add("hidden");
+          }
+
+          // Switch cards
+          revealCard.classList.add("hidden");
+          roleCard.classList.remove("hidden");
+          roleCard.classList.add("revealing");
+
+          // Create sparkles
+          createSparkles();
+
+          // Clean up animations
+          setTimeout(() => {
+            flipInner.classList.remove("flipping");
+            revealCard.classList.remove("revealing");
+            roleCard.classList.remove("revealing");
+            emojiEl.classList.remove("bouncing");
+          }, 1000);
+        }, 500);
       }
+
       function hideRole() {
         document.getElementById("role-card").classList.add("hidden");
         document.getElementById("reveal-card").classList.remove("hidden");
         document.getElementById("teammates-section").classList.add("hidden");
+
+        // Reset flip inner state
+        document.getElementById("card-flip-inner").classList.remove("flipping");
       }
     </script>
   </body>
 </html>
+
+							<script>
+
+							</script>
+                        </body>
+                        </html>
+                    
