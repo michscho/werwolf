@@ -1,1 +1,1408 @@
-.
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🐺 Werwolf - Sri Lanka Edition</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background: linear-gradient(135deg, #0a1f0a 0%, #1a3a1a 30%, #0d4d2b 70%, #065535 100%);
+        min-height: 100vh;
+        color: #fff;
+        padding: 20px;
+        padding-bottom: 100px;
+        line-height: 1.7;
+      }
+      .container {
+        max-width: 480px;
+        margin: 0 auto;
+      }
+      h1 {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 5px;
+        text-shadow: 0 0 30px rgba(255, 183, 77, 0.5);
+      }
+      h2 {
+        font-size: 1.2rem;
+        color: #a8a8a8;
+        margin-bottom: 20px;
+      }
+      h3 {
+        color: #ffb74d;
+        margin: 20px 0 10px;
+        font-size: 1.1rem;
+      }
+      .subtitle {
+        text-align: center;
+        color: #4caf50;
+        margin-bottom: 10px;
+        font-weight: 500;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+      }
+      .edition-badge {
+        text-align: center;
+        background: linear-gradient(135deg, #ff6f00, #ffb74d);
+        color: #000;
+        padding: 8px 20px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        display: inline-block;
+        margin: 0 auto 20px;
+        width: auto;
+      }
+      .edition-container {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .story-card {
+        background: linear-gradient(135deg, rgba(255, 152, 0, 0.15), rgba(76, 175, 80, 0.1));
+        border: 2px solid rgba(255, 183, 77, 0.3);
+        border-radius: 20px;
+        padding: 24px;
+        margin-bottom: 24px;
+        position: relative;
+        overflow: hidden;
+      }
+      .story-card::before {
+        content: "🌴";
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 2rem;
+        opacity: 0.3;
+      }
+      .story-card::after {
+        content: "🐘";
+        position: absolute;
+        bottom: 10px;
+        left: 15px;
+        font-size: 2rem;
+        opacity: 0.3;
+      }
+      .story-card.compact {
+        padding: 18px;
+        margin-bottom: 18px;
+      }
+      .story-card.compact .story-title {
+        font-size: 1rem;
+        margin-bottom: 8px;
+      }
+      .story-card.compact .story-text {
+        font-size: 0.85rem;
+        line-height: 1.6;
+      }
+      .story-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #ffb74d;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .story-text {
+        font-size: 0.95rem;
+        line-height: 1.8;
+        color: rgba(255, 255, 255, 0.9);
+      }
+      .prize-banner {
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 152, 0, 0.15));
+        border: 2px solid rgba(255, 215, 0, 0.4);
+        border-radius: 16px;
+        padding: 16px 20px;
+        margin-bottom: 24px;
+        text-align: center;
+        animation: prizePulse 2s infinite;
+      }
+      .prize-banner.compact {
+        padding: 12px 16px;
+        margin-bottom: 16px;
+      }
+      .prize-banner-text {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #ffd700;
+      }
+      .prize-banner.compact .prize-banner-text {
+        font-size: 1rem;
+      }
+      .prize-banner-sub {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.8);
+        margin-top: 4px;
+      }
+      .prize-banner.compact .prize-banner-sub {
+        font-size: 0.8rem;
+      }
+      @keyframes prizePulse {
+        0%, 100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+        50% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.5); }
+      }
+      .card {
+        background: rgba(255, 255, 255, 0.06);
+        border-radius: 24px;
+        padding: 28px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      }
+      .hidden { display: none !important; }
+      textarea {
+        width: 100%;
+        padding: 16px;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        background: rgba(0, 0, 0, 0.4);
+        color: #fff;
+        font-size: 1rem;
+        font-family: inherit;
+        min-height: 200px;
+        resize: vertical;
+        margin-bottom: 12px;
+        transition: all 0.3s ease;
+      }
+      textarea:focus {
+        outline: none;
+        border-color: #4caf50;
+        box-shadow: 0 0 20px rgba(76, 175, 80, 0.2);
+      }
+      textarea::placeholder { color: rgba(255, 255, 255, 0.3); }
+      small { color: #666; font-size: 0.85rem; }
+      .btn {
+        width: 100%;
+        padding: 18px;
+        border: none;
+        border-radius: 16px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 12px;
+        transition: all 0.3s ease;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, #4caf50, #2e7d32);
+        color: #fff;
+        box-shadow: 0 4px 20px rgba(76, 175, 80, 0.4);
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 30px rgba(76, 175, 80, 0.5);
+      }
+      .btn-primary:active { transform: translateY(0); }
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 255, 255, 0.15);
+        color: #fff;
+      }
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.25);
+      }
+      .btn-reveal {
+        background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(76, 175, 80, 0.1));
+        border: 3px dashed rgba(76, 175, 80, 0.4);
+        color: #fff;
+        padding: 40px;
+        font-size: 1.5rem;
+        border-radius: 20px;
+      }
+      .btn-reveal:hover {
+        background: linear-gradient(135deg, rgba(76, 175, 80, 0.3), rgba(76, 175, 80, 0.15));
+        border-color: #4caf50;
+        transform: scale(1.02);
+      }
+      .player-link {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 14px;
+        padding: 14px 18px;
+        margin-bottom: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .player-link-name {
+        font-weight: 600;
+        color: #ffb74d;
+        font-size: 1.1rem;
+      }
+      .btn-copy {
+        padding: 10px 18px;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(135deg, rgba(76, 175, 80, 0.5), rgba(76, 175, 80, 0.3));
+        color: #fff;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+      }
+      .btn-copy:hover { transform: scale(1.05); }
+      .btn-copy.copied { background: linear-gradient(135deg, #ff6f00, #ffb74d); }
+      .role-emoji {
+        font-size: 6rem;
+        text-align: center;
+        display: block;
+        margin: 15px 0 20px;
+        filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.3));
+      }
+      .role-name {
+        text-align: center;
+        font-size: 2.4rem;
+        font-weight: bold;
+        margin-bottom: 12px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+      .role-team {
+        text-align: center;
+        padding: 12px 20px;
+        border-radius: 30px;
+        margin-bottom: 25px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        display: inline-block;
+        width: 100%;
+      }
+      .role-team.evil {
+        background: linear-gradient(135deg, #c0392b, #96281b);
+        box-shadow: 0 4px 20px rgba(192, 57, 43, 0.4);
+      }
+      .role-team.good {
+        background: linear-gradient(135deg, #4caf50, #2e7d32);
+        box-shadow: 0 4px 20px rgba(76, 175, 80, 0.4);
+      }
+      .role-team.neutral {
+        background: linear-gradient(135deg, #f39c12, #d68910);
+        box-shadow: 0 4px 20px rgba(243, 156, 18, 0.4);
+      }
+      .role-box {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 16px;
+        padding: 18px;
+        margin-bottom: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .role-box p { margin-bottom: 12px; }
+      .role-box ul { margin-left: 20px; }
+      .role-box li { margin: 10px 0; }
+      .teammates {
+        background: linear-gradient(135deg, rgba(192, 57, 43, 0.2), rgba(150, 40, 27, 0.15));
+        border: 2px solid rgba(231, 76, 60, 0.5);
+        border-radius: 16px;
+        padding: 18px;
+        margin-bottom: 15px;
+      }
+      .teammates h3 { margin-top: 0; color: #e74c3c; }
+      .teammates ul { list-style: none; }
+      .teammates li {
+        padding: 10px 0;
+        font-size: 1.2rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .teammates li:last-child { border: none; }
+      .warning {
+        background: linear-gradient(135deg, rgba(243, 156, 18, 0.2), rgba(230, 126, 34, 0.15));
+        border-radius: 14px;
+        padding: 18px;
+        text-align: center;
+        color: #f39c12;
+        margin: 20px 0;
+        font-weight: 600;
+        border: 1px solid rgba(243, 156, 18, 0.3);
+      }
+      .info-box {
+        background: linear-gradient(135deg, rgba(76, 175, 80, 0.15), rgba(76, 175, 80, 0.08));
+        border-radius: 14px;
+        padding: 18px;
+        margin: 18px 0;
+        font-size: 0.95rem;
+        border: 1px solid rgba(76, 175, 80, 0.2);
+      }
+      .special-rule {
+        background: linear-gradient(135deg, rgba(155, 89, 182, 0.2), rgba(142, 68, 173, 0.15));
+        border: 2px solid rgba(155, 89, 182, 0.4);
+        border-radius: 12px;
+        padding: 15px;
+        margin: 15px 0;
+      }
+      .special-rule strong {
+        color: #bb86fc;
+      }
+      .rules-hint {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        z-index: 100;
+      }
+      .rules-hint-text {
+        background: rgba(0, 0, 0, 0.8);
+        padding: 10px 16px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        color: #fff;
+        opacity: 0;
+        transform: translateX(10px);
+        transition: all 0.3s ease;
+        pointer-events: none;
+        white-space: nowrap;
+        border: 1px solid rgba(76, 175, 80, 0.3);
+      }
+      .rules-hint:hover .rules-hint-text {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      .btn-rules {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        border: none;
+        background: linear-gradient(135deg, #4caf50, #2e7d32);
+        color: #fff;
+        font-size: 1.7rem;
+        cursor: pointer;
+        box-shadow: 0 4px 25px rgba(76, 175, 80, 0.5);
+        transition: all 0.3s ease;
+        position: relative;
+      }
+      .btn-rules:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 35px rgba(76, 175, 80, 0.6);
+      }
+      .btn-rules::after {
+        content: "";
+        position: absolute;
+        inset: -4px;
+        border-radius: 50%;
+        border: 2px solid rgba(76, 175, 80, 0.5);
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.15); opacity: 0; }
+      }
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.95);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        padding: 15px;
+        backdrop-filter: blur(5px);
+      }
+      .modal {
+        background: linear-gradient(135deg, #1a3a1a, #0d4d2b);
+        border-radius: 24px;
+        max-width: 520px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      }
+      .modal-header {
+        padding: 24px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        background: linear-gradient(135deg, #1a3a1a, #0d4d2b);
+        z-index: 1;
+      }
+      .modal-header h2 { margin: 0; font-size: 1.5rem; }
+      .modal-close {
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: #fff;
+        font-size: 1.5rem;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        transition: all 0.2s ease;
+      }
+      .modal-close:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: rotate(90deg);
+      }
+      .modal-content { padding: 24px; }
+      .modal-content p { margin-bottom: 10px; }
+      .modal-content ul { margin: 12px 0 18px 20px; }
+      .modal-content li { margin: 8px 0; }
+      .rule-card {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 16px;
+        padding: 18px;
+        margin: 18px 0;
+      }
+      .rule-card h3 { margin-top: 0; }
+      .rule-card.wolf { border-left: 4px solid #e74c3c; }
+      .rule-card.wolf h3 { color: #e74c3c; }
+      .rule-card.village { border-left: 4px solid #4caf50; }
+      .rule-card.village h3 { color: #4caf50; }
+      .rule-card.special { border-left: 4px solid #ff6f00; }
+      .rule-card.special h3 { color: #ff6f00; }
+      .rule-card.buddha { border-left: 4px solid #f39c12; }
+      .rule-card.buddha h3 { color: #f39c12; }
+      .rule-card.amor { border-left: 4px solid #e91e63; }
+      .rule-card.amor h3 { color: #e91e63; }
+      .rule-card.duel { border-left: 4px solid #9b59b6; }
+      .rule-card.duel h3 { color: #9b59b6; }
+      .or-divider {
+        text-align: center;
+        color: #f39c12;
+        font-weight: bold;
+        margin: 12px 0;
+      }
+      .toast {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 14px 28px;
+        border-radius: 14px;
+        color: #fff;
+        font-weight: 600;
+        z-index: 9999;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      }
+      .install-banner {
+        background: linear-gradient(135deg, rgba(76, 175, 80, 0.15), rgba(46, 125, 50, 0.1));
+        border: 1px solid rgba(76, 175, 80, 0.3);
+        border-radius: 16px;
+        padding: 16px 20px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .install-banner:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(76, 175, 80, 0.2);
+        background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(46, 125, 50, 0.15));
+      }
+      .install-banner-icon {
+        font-size: 2rem;
+        background: linear-gradient(135deg, #4caf50, #2e7d32);
+        width: 50px;
+        height: 50px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .install-banner-text { flex: 1; }
+      .install-banner-title { font-weight: 700; font-size: 1rem; margin-bottom: 2px; }
+      .install-banner-sub { font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); }
+      .install-banner-arrow { font-size: 1.5rem; color: #4caf50; }
+      .glow-orb {
+        position: fixed;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(76, 175, 80, 0.15) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: -1;
+      }
+      .glow-orb-1 {
+        top: -100px;
+        right: -100px;
+        background: radial-gradient(circle, rgba(255, 152, 0, 0.15) 0%, transparent 70%);
+      }
+      .glow-orb-2 { bottom: -100px; left: -100px; }
+      .palm-deco {
+        position: fixed;
+        font-size: 4rem;
+        opacity: 0.1;
+        pointer-events: none;
+        z-index: -1;
+      }
+      .palm-1 { top: 20%; left: 5%; }
+      .palm-2 { top: 60%; right: 5%; }
+      .palm-3 { bottom: 10%; left: 10%; }
+      .first-time-hint {
+        position: fixed;
+        bottom: 100px;
+        right: 20px;
+        background: linear-gradient(135deg, #4caf50, #2e7d32);
+        color: #fff;
+        padding: 12px 18px;
+        border-radius: 14px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        box-shadow: 0 4px 20px rgba(76, 175, 80, 0.4);
+        animation: bounce 2s infinite, fadeIn 0.5s ease;
+        z-index: 99;
+      }
+      .first-time-hint::after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        right: 30px;
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-top: 10px solid #2e7d32;
+      }
+      @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .card-flip-container { perspective: 1000px; }
+      .card-flip-inner {
+        position: relative;
+        transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transform-style: preserve-3d;
+      }
+      .card-flip-inner.flipping {
+        animation: flipReveal 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      }
+      @keyframes flipReveal {
+        0% { transform: rotateY(0deg) scale(1); }
+        50% { transform: rotateY(180deg) scale(1.1); }
+        100% { transform: rotateY(360deg) scale(1); }
+      }
+      .card.revealing { animation: glowPulse 1s ease-out; }
+      @keyframes glowPulse {
+        0% { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); }
+        50% { box-shadow: 0 0 60px rgba(76, 175, 80, 0.8), 0 0 100px rgba(76, 175, 80, 0.4); }
+        100% { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); }
+      }
+      .role-emoji.bouncing { animation: emojiBounce 0.6s ease-out 0.5s both; }
+      @keyframes emojiBounce {
+        0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+        50% { transform: scale(1.3) rotate(10deg); }
+        70% { transform: scale(0.9) rotate(-5deg); }
+        100% { transform: scale(1) rotate(0deg); opacity: 1; }
+      }
+      .sparkle-container {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        border-radius: 24px;
+      }
+      .sparkle {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: #fff;
+        border-radius: 50%;
+        animation: sparkle 1s ease-out forwards;
+      }
+      @keyframes sparkle {
+        0% { transform: scale(0) translate(0, 0); opacity: 1; }
+        100% { transform: scale(1) translate(var(--tx), var(--ty)); opacity: 0; }
+      }
+    </style>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#1a3a1a" />
+  </head>
+  <body>
+    <div class="glow-orb glow-orb-1"></div>
+    <div class="glow-orb glow-orb-2"></div>
+    <div class="palm-deco palm-1">🌴</div>
+    <div class="palm-deco palm-2">🌴</div>
+    <div class="palm-deco palm-3">🐘</div>
+
+    <div class="container">
+      <div class="install-banner hidden" id="install-banner" onclick="installApp()">
+        <div class="install-banner-icon">📲</div>
+        <div class="install-banner-text">
+          <div class="install-banner-title">Als App installieren</div>
+          <div class="install-banner-sub">Schneller Zugriff vom Homescreen</div>
+        </div>
+        <span class="install-banner-arrow">›</span>
+      </div>
+
+      <!-- ADMIN -->
+      <div id="admin-section">
+        <h1>🐺 Werwolf</h1>
+        <p class="subtitle">Real-Life Edition</p>
+        <div class="edition-container">
+          <span class="edition-badge">🇱🇰 Sri Lanka Sonderedition</span>
+        </div>
+
+        <div class="prize-banner">
+          <div class="prize-banner-text">🏆 Gewinnen lohnt sich! 🏆</div>
+          <div class="prize-banner-sub">🐘 Es warten Elefantensticker auf euch! 🐘</div>
+        </div>
+
+        <div class="story-card">
+          <div class="story-title">📖 Die Geschichte</div>
+          <div class="story-text">
+            In Sri Lanka sind die Werwölfe ausgebrochen und vermehren sich immer mehr! 🐺 Sie verringern die einheimischen Tierbestände drastisch. Doch vor den Einheimischen und vor <strong>WeRoad-Gruppen</strong> machen die Werwölfe keinen Halt. Sie fressen sie alle heimtückisch... 😱
+            <br /><br />
+            <strong>Könnt ihr die Werwölfe stoppen?</strong>
+          </div>
+        </div>
+
+        <div class="card" id="setup-card">
+          <h2>Wer spielt mit?</h2>
+          <textarea id="player-names" placeholder="Max
+Anna
+Tom
+Lisa
+Ben
+Sarah
+..."></textarea>
+          <small>Ein Name pro Zeile • 5-13 Spieler</small>
+          <button class="btn btn-primary" onclick="createGame()">
+            🎲 Rollen verteilen
+          </button>
+        </div>
+
+        <div class="card hidden" id="links-card">
+          <h2>📱 Links verschicken</h2>
+          <p style="margin-bottom: 18px">
+            Schick jedem Spieler <strong>privat</strong> seinen persönlichen Link:
+          </p>
+          <div id="player-links"></div>
+          <button class="btn btn-secondary" onclick="resetGame()">
+            ↻ Neues Spiel starten
+          </button>
+        </div>
+      </div>
+
+      <!-- PLAYER -->
+      <div id="player-section" class="hidden">
+        <div class="card hidden" id="error-card">
+          <h1 style="text-align: center; font-size: 4rem">❌</h1>
+          <p style="text-align: center; font-size: 1.2rem; margin: 20px 0">
+            Ungültiger oder abgelaufener Link
+          </p>
+          <button class="btn btn-secondary" onclick="goHome()">
+            ← Zur Startseite
+          </button>
+        </div>
+
+        <div class="card hidden" id="reveal-card">
+          <div class="edition-container" style="margin-bottom: 15px">
+            <span class="edition-badge">🇱🇰 Sri Lanka Edition</span>
+          </div>
+          
+          <div class="story-card compact">
+            <div class="story-title">📖 Die Geschichte</div>
+            <div class="story-text">
+              In Sri Lanka sind die Werwölfe ausgebrochen! 🐺 Vor den <strong>WeRoad-Gruppen</strong> machen sie keinen Halt. Sie fressen sie alle heimtückisch... 😱
+              <br /><strong>Könnt ihr die Werwölfe stoppen?</strong>
+            </div>
+          </div>
+          
+          <div class="prize-banner compact">
+            <div class="prize-banner-text">🏆 Gewinnen lohnt sich! 🏆</div>
+            <div class="prize-banner-sub">🐘 Es warten Elefantensticker auf euch! 🐘</div>
+          </div>
+          
+          <div class="card-flip-container">
+            <div class="card-flip-inner" id="card-flip-inner">
+              <h1 style="text-align: center; font-size: 1.8rem">
+                Hey <span id="player-name-preview" style="color: #4caf50"></span>! 👋
+              </h1>
+              <p class="warning">⚠️ Zeig dein Handy niemandem!</p>
+              <button class="btn btn-reveal" onclick="showRole()">
+                👆 Tippe um deine Rolle zu sehen
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card hidden" id="role-card">
+          <div class="sparkle-container" id="sparkle-container"></div>
+          <span class="role-emoji" id="role-emoji"></span>
+          <div class="role-name" id="role-name"></div>
+          <div class="role-team" id="role-team"></div>
+          <div class="role-box" id="role-desc"></div>
+          <div class="role-box" id="role-action"></div>
+          <div class="teammates hidden" id="teammates-section">
+            <h3>🐺 Dein Rudel</h3>
+            <ul id="teammates-list"></ul>
+          </div>
+          <button class="btn btn-secondary" onclick="hideRole()">
+            🙈 Rolle verstecken
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="first-time-hint hidden" id="first-time-hint">
+      📜 Hier findest du alle Regeln!
+    </div>
+
+    <div class="rules-hint">
+      <span class="rules-hint-text">📖 Spielregeln lesen</span>
+      <button class="btn-rules" onclick="showRules()">📜</button>
+    </div>
+
+    <!-- Rules Modal -->
+    <div class="modal-overlay hidden" id="rules-modal" onclick="if(event.target.id==='rules-modal')closeRules()">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>📜 Spielregeln - Sri Lanka Edition</h2>
+          <button class="modal-close" onclick="closeRules()">×</button>
+        </div>
+        <div class="modal-content">
+          <h3>🎯 Ziel des Spiels</h3>
+          <p><strong>🐺 Werwölfe:</strong> Tötet alle WeRoaders!</p>
+          <p><strong>🏠 WeRoaders:</strong> Findet und lyncht alle Werwölfe!</p>
+          <p><strong>🧘 Buddha:</strong> Erreiche die totale Erleuchtung!</p>
+          <p><strong>💘 Verliebte:</strong> Überlebt gemeinsam bis zum Ende!</p>
+
+          <h3>⚡ Das Besondere</h3>
+          <p>Alles passiert <strong>im echten Leben</strong> - jederzeit, überall! Keine Spielrunden, keine Moderation nötig.</p>
+
+          <div class="rule-card wolf">
+            <h3>🐺 Werwolf-Kill</h3>
+            <p>Werwölfe kennen sich und dürfen sich absprechen.</p>
+            <p><strong>Option A - Einzeln:</strong></p>
+            <ul>
+              <li>Ein Werwolf ist <strong>alleine</strong> mit dem Opfer</li>
+              <li>Markiert das Opfer</li>
+              <li>Mindestens ein weiterer Werwolf macht später dasselbe</li>
+              <li>→ Nach allen Markierungen: <strong>tot</strong></li>
+            </ul>
+            <div class="or-divider">— ODER —</div>
+            <p><strong>Option B - Zusammen:</strong></p>
+            <ul>
+              <li><strong>Alle</strong> Werwölfe + Opfer allein im Raum</li>
+              <li>Ohne andere Personen!</li>
+              <li>→ Sofort <strong>tot</strong></li>
+            </ul>
+            <p>⚠️ Opfer weiß wer, <strong>darf es aber nicht verraten!</strong></p>
+            <p><em>Bei 5 Spielern: Nur 1 Werwolf - eine Markierung reicht!</em></p>
+          </div>
+
+          <div class="rule-card village">
+            <h3>⚖️ Lynch</h3>
+            <ul>
+              <li><strong>Mindestens #Anzahl Werwölfe + 1 Personen</strong> einigen sich auf jemanden</li>
+              <li>Der Verdächtige darf dabei sein oder nicht</li>
+              <li>→ Diese Person ist <strong>gelyncht</strong></li>
+            </ul>
+          </div>
+
+          <div class="rule-card special">
+            <h3>👁️ Seherin</h3>
+            <ul>
+              <li>Sei <strong>alleine</strong> mit jemandem</li>
+              <li>Bei 10+ Spielern: Bis zu eine weitere Person darf dabei sein (<strong>nur 1x pro Spiel</strong>)</li>
+              <li>Sag: <strong>"Zeig mir deine Rolle"</strong></li>
+              <li>Person <strong>muss</strong> ihr Handy zeigen!</li>
+            </ul>
+          </div>
+
+          <div class="rule-card special">
+            <h3>🛡️ Leibwächter</h3>
+            <p><strong>Schutz geben:</strong></p>
+            <ul>
+              <li>Sei <strong>alleine</strong> mit jemandem</li>
+              <li>Bei 10+ Spielern: Bis zu eine weitere Person darf dabei sein (<strong>nur 1x pro Spiel</strong>)</li>
+              <li>Sag: <strong>"Du stehst unter meinem Schutz"</strong></li>
+              <li>Gilt bis du jemand anderen schützt</li>
+            </ul>
+            <p><strong>Wenn Geschützter markiert oder von allen getötet wird:</strong></p>
+            <ul>
+              <li>Dieses Mal ungültig.</li>
+              <li>Schutz ist danach verbraucht</li>
+            </ul>
+          </div>
+
+          <div class="rule-card special">
+            <h3>🧙‍♀️ Hexe</h3>
+            <p><strong>💚 Wiederbelebung (einmalig):</strong></p>
+            <ul>
+              <li>Sei <strong>alleine</strong> mit einer <strong>toten</strong> Person</li>
+              <li>Bei 10+ Spielern: Eine weitere Person darf dabei sein (<strong>nur 1x pro Spiel</strong>)</li>
+              <li>Sag: <strong>"Ich belebe dich wieder"</strong></li>
+              <li>Person lebt wieder und ist zurück im Spiel!</li>
+            </ul>
+            <p><strong>💀 Gifttrank (einmalig):</strong></p>
+            <ul>
+              <li>Sei <strong>alleine</strong> mit jemandem</li>
+              <li>Bei 10+ Spielern: Eine weitere Person darf dabei sein (<strong>nur 1x pro Spiel</strong>)</li>
+              <li>Sag: <strong>"Gift"</strong></li>
+              <li>Sofort <strong>tot!</strong></li>
+            </ul>
+          </div>
+
+          <div class="rule-card duel">
+            <h3>⚔️ Duell: Hexe vs. Werwolf</h3>
+            <p>Wenn Hexe und Werwolf <strong>alleine in einem Raum</strong> sind:</p>
+            <ul>
+              <li>Wer <strong>zuerst</strong> seine Fähigkeit einsetzt, überlebt!</li>
+              <li>Hexe sagt <strong>"Gift"</strong> → Werwolf stirbt</li>
+              <li>Werwolf <strong>markiert</strong> → Hexe ist markiert</li>
+              <li>⚡ Es zählt, wer schneller ist!</li>
+            </ul>
+          </div>
+
+          <div class="rule-card special">
+            <h3>🏹 Jäger</h3>
+            <ul>
+              <li>Wenn du stirbst und <strong>dabei bist:</strong></li>
+              <li>Benenne sofort jemanden!</li>
+              <li>Diese Person stirbt auch!</li>
+              <li>⚠️ <strong>Ausnahme:</strong> Du darfst <strong>nicht</strong> die Person benennen, die direkt für deinen Tod verantwortlich war!</li>
+            </ul>
+          </div>
+
+          <div class="rule-card amor">
+            <h3>💘 Amor</h3>
+            <p><strong>💕 Verlieben (beliebig oft wiederholbar):</strong></p>
+            <ul>
+              <li>Sei mit <strong>genau zwei Personen</strong> allein</li>
+              <li>Bei 10+ Spielern: Bis zu eine weitere unbeteiligte Person darf dabei sein (<strong>nur 1x pro Spiel</strong>)</li>
+              <li>Sag: <strong>"Ihr seid verliebt"</strong></li>
+              <li>Die beiden sind nun ein Liebespaar!</li>
+              <li>⚠️ Nur <strong>ein aktives Paar</strong> gleichzeitig möglich</li>
+            </ul>
+            <p><strong>💔 Effekt der Liebe:</strong></p>
+            <ul>
+              <li>Stirbt eine verliebte Person, <strong>stirbt die andere aus Liebeskummer sofort mit!</strong></li>
+              <li>Verliebte können aus verschiedenen Teams sein</li>
+              <li>Beide Verliebten am Ende am Leben = <strong>gemeinsamer Bonus-Sieg!</strong></li>
+            </ul>
+            <p><strong>🔄 Neues Paar:</strong></p>
+            <ul>
+              <li>Wenn das Liebespaar <strong>gestorben</strong> ist</li>
+              <li>Darfst du ein <strong>neues Paar</strong> verlieben!</li>
+            </ul>
+          </div>
+
+          <div class="rule-card buddha">
+            <h3>🧘 Buddha</h3>
+            <p><strong>🎯 Dein Ziel - Totale Erleuchtung:</strong></p>
+            <ul>
+              <li>Du bist <strong>weder</strong> Werwolf noch WeRoader</li>
+              <li><strong>Team-Sieg:</strong> Du gewinnst mit den WeRoadern, wenn alle Werwölfe tot sind</li>
+              <li><strong>Solo-Sieg:</strong> Du gewinnst <strong>alleine</strong>, wenn alle anderen Lebenden bereits erleuchtet wurden!</li>
+            </ul>
+            <p><strong>🕊️ Erleuchtung = ROLLENTAUSCH (einmalig pro Buddha):</strong></p>
+            <ul>
+              <li>Sei <strong>alleine</strong> mit jemandem</li>
+              <li>Sag: <strong>"Ich erleuchte dich"</strong></li>
+            </ul>
+            <div style="background:rgba(243,156,18,0.25); border:2px solid rgba(243,156,18,0.4); border-radius:12px; padding:15px; margin:15px 0;">
+              <strong style="color:#f39c12;">🔄 Rollentausch:</strong>
+              <ul style="margin-top:10px;">
+                <li>Die andere Person wird zum <strong>Buddha</strong></li>
+                <li>Du übernimmst die <strong>Rolle dieser Person</strong></li>
+                <li>Die Person gilt als "erleuchtet" (war schon mal Buddha)</li>
+              </ul>
+            </div>
+            <p><strong>✨ Solo-Sieg Bedingung:</strong></p>
+            <ul>
+              <li>Alle anderen <strong>lebenden</strong> Spieler müssen bereits erleuchtet sein</li>
+              <li>→ Du gewinnst dann <strong>sofort alleine</strong>!</li>
+            </ul>
+          </div>
+
+          <div class="rule-card village">
+            <h3>☠️ Tod & Infos</h3>
+            <ul>
+              <li>Tote dürfen <strong>nichts mehr sagen</strong></li>
+              <li>Jeder darf fragen: <strong>"Bist du tot?"</strong></li>
+              <li>Antwort muss <strong>ehrlich</strong> sein</li>
+              <li>Markierte dürfen <strong>nicht verraten</strong> wer</li>
+            </ul>
+          </div>
+
+          <h3>🏆 Spielende</h3>
+          <p>✅ <strong>WeRoaders gewinnen:</strong> Alle Werwölfe sind tot</p>
+          <p>❌ <strong>Werwölfe gewinnen:</strong> Gleich viele oder mehr als WeRoaders</p>
+          <p>🧘 <strong>Buddha Team-Sieg:</strong> Gewinnt mit WeRoadern wenn alle Wölfe tot</p>
+          <p>🧘✨ <strong>Buddha Solo-Sieg:</strong> Alle anderen Lebenden wurden bereits erleuchtet!</p>
+          <p>💘 <strong>Verliebte gewinnen:</strong> Wenn beide am Ende noch leben (Bonus)</p>
+
+          <h3>📊 Rollenverteilung</h3>
+          <div class="info-box">
+            <p><strong>5 Spieler:</strong> 1🐺 1👁️ 1🛡️ 1🧙‍♀️ 1🎒</p>
+            <p><strong>6 Spieler:</strong> 2🐺 1👁️ 1🛡️ 2🎒</p>
+            <p><strong>7 Spieler:</strong> 2🐺 1👁️ 1🛡️ 1🧙‍♀️ 2🎒</p>
+            <p><strong>8 Spieler:</strong> 3🐺 1👁️ 1🛡️ 1🧙‍♀️ 2🎒</p>
+            <p><strong>9 Spieler:</strong> 3🐺 1👁️ 1🛡️ 1🧙‍♀️ 1🏹 2🎒</p>
+            <p><strong>10 Spieler:</strong> 2🐺 1👁️ 1🛡️ 1🧙‍♀️ 1🏹 1💘 3🎒</p>
+            <p><strong>11 Spieler:</strong> 3🐺 1👁️ 1🛡️ 1🧙‍♀️ 1🏹 1💘 3🎒</p>
+            <p><strong>12 Spieler:</strong> 3🐺 1👁️ 1🛡️ 1🧙‍♀️ 1🏹 1💘 4🎒</p>
+            <p><strong>13 Spieler:</strong> 3🐺 1👁️ 1🛡️ 1🧙‍♀️ 1🏹 1💘 1🧘 4🎒</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const SECRET = "WerwolfSriLanka2024!";
+
+      const ROLES = {
+        werewolf: {
+          name: "Werwolf",
+          emoji: "🐺",
+          team: "evil",
+          teamName: "🐺 Team Werwolf",
+          desc: "Du bist ein Werwolf! Eliminiere die WeRoaders ohne entdeckt zu werden.",
+          action: `<strong>So tötest du:</strong>
+            <p><strong>Option A - Einzeln:</strong></p>
+            <ul>
+              <li>Sei <strong>alleine</strong> mit dem Opfer</li>
+              <li>Markiere das Opfer</li>
+              <li>Mindestens ein weiterer Werwolf macht später dasselbe</li>
+              <li>→ Nach allen Markierungen: tot</li>
+            </ul>
+            <p style="text-align:center; color:#f39c12; font-weight:bold;">— ODER —</p>
+            <p><strong>Option B - Zusammen:</strong></p>
+            <ul>
+              <li><strong>Alle</strong> Werwölfe + Opfer allein im Raum</li>
+              <li>Ohne andere Personen!</li>
+              <li>→ Sofort tot!</li>
+            </ul>
+            <p>⚠️ Opfer weiß wer, darf es aber niemandem verraten!</p>
+            <div class="special-rule">
+              <strong>⚔️ Duell mit Hexe:</strong> Wenn du alleine mit der Hexe bist - wer zuerst handelt, überlebt! Markiere schneller als sie "Gift" sagt!
+            </div>`,
+          actionSolo: `<strong>So tötest du:</strong>
+            <ul>
+              <li>Sei <strong>alleine</strong> mit dem Opfer</li>
+              <li>Markiere das Opfer</li>
+              <li>→ Die Person ist <strong>sofort tot!</strong></li>
+            </ul>
+            <p>⚠️ Opfer weiß wer, darf es aber niemandem verraten!</p>
+            <p style="margin-top:15px; padding:12px; background:rgba(231,76,60,0.2); border-radius:10px;">💡 Du bist der <strong>einzige Werwolf</strong> - sei besonders vorsichtig!</p>
+            <div class="special-rule">
+              <strong>⚔️ Duell mit Hexe:</strong> Wenn du alleine mit der Hexe bist - wer zuerst handelt, überlebt! Markiere schneller als sie "Gift" sagt!
+            </div>`,
+          descSolo: "Du bist der einzige Werwolf! Eliminiere die WeRoaders ohne entdeckt zu werden. Vertraue niemandem!",
+        },
+        seer: {
+          name: "Seherin",
+          emoji: "👁️",
+          team: "good",
+          teamName: "🏠 Team WeRoad",
+          desc: "Du kannst die wahre Identität anderer Spieler sehen!",
+          action: `<strong>So nutzt du deine Gabe:</strong>
+            <ul>
+              <li>Sei <strong>alleine</strong> mit jemandem</li>
+              <li>Bei 10+ Spielern: Bis zu eine weitere Person darf dabei sein (<strong>nur 1x pro Spiel!</strong>)</li>
+              <li>Sag: <strong>"Zeig mir deine Rolle"</strong></li>
+              <li>Person muss dir ihr Handy zeigen!</li>
+            </ul>
+            <p style="margin-top:15px; padding:12px; background:rgba(76,175,80,0.2); border-radius:10px;">💡 Vorsicht - verrätst du dich, bist du das nächste Ziel!</p>`,
+        },
+        guardian: {
+          name: "Leibwächter",
+          emoji: "🛡️",
+          team: "good",
+          teamName: "🏠 Team WeRoad",
+          desc: "Du kannst andere Spieler vor den Werwölfen beschützen!",
+          action: `<strong>Schutz geben:</strong>
+            <ul>
+              <li>Sei <strong>alleine</strong> mit jemandem</li>
+              <li>Bei 10+ Spielern: Bis zu eine weitere Person darf dabei sein (<strong>nur 1x pro Spiel!</strong>)</li>
+              <li>Sag: <strong>"Du stehst unter meinem Schutz"</strong></li>
+              <li>Gilt bis du jemand anderen schützt</li>
+            </ul>
+            <p><strong>Wenn Geschützter markiert oder von allen getötet wird:</strong></p>
+            <ul>
+              <li>Dieses Mal ungültig.</li>
+              <li>Schutz ist danach verbraucht</li>
+            </ul>`,
+        },
+        witch: {
+          name: "Hexe",
+          emoji: "🧙‍♀️",
+          team: "good",
+          teamName: "🏠 Team WeRoad",
+          desc: "Du besitzt zwei mächtige Tränke - setze sie weise ein!",
+          action: `<strong>💚 Wiederbelebung (einmalig):</strong>
+            <ul>
+              <li>Sei <strong>alleine</strong> mit einer <strong>toten</strong> Person</li>
+              <li>Bei 10+ Spielern: Eine weitere Person darf dabei sein (<strong>nur 1x pro Spiel!</strong>)</li>
+              <li>Sag: <strong>"Ich belebe dich wieder"</strong></li>
+              <li>Person lebt wieder!</li>
+            </ul>
+            <strong>💀 Gifttrank (einmalig):</strong>
+            <ul>
+              <li>Sei <strong>alleine</strong> mit jemandem</li>
+              <li>Bei 10+ Spielern: Eine weitere Person darf dabei sein (<strong>nur 1x pro Spiel!</strong>)</li>
+              <li>Sag: <strong>"Gift"</strong></li>
+              <li>Sofort tot!</li>
+            </ul>
+            <div class="special-rule">
+              <strong>⚔️ Duell mit Werwolf:</strong> Wenn du alleine mit einem Werwolf bist - wer zuerst handelt, überlebt! Sag "Gift" bevor er dich markiert!
+            </div>`,
+        },
+        hunter: {
+          name: "Jäger",
+          emoji: "🏹",
+          team: "good",
+          teamName: "🏠 Team WeRoad",
+          desc: "Wenn du stirbst, nimmst du jemanden mit ins Grab!",
+          action: `<strong>Deine letzte Kugel:</strong>
+            <ul>
+              <li>Wenn du stirbst und <strong>dabei bist:</strong></li>
+              <li>Benenne sofort jemanden!</li>
+              <li>Diese Person stirbt auch!</li>
+            </ul>
+            <div style="background:rgba(231,76,60,0.2); border:2px solid rgba(231,76,60,0.4); border-radius:12px; padding:15px; margin:15px 0;">
+              <strong style="color:#e74c3c;">⚠️ Wichtige Einschränkung:</strong>
+              <p style="margin-top:8px; margin-bottom:0;">Du darfst <strong>NICHT</strong> die Person benennen, die direkt für deinen Tod verantwortlich war!</p>
+              <ul style="margin-top:10px; margin-bottom:0;">
+                <li>Von Werwölfen getötet? → Keinen der Werwölfe benennen!</li>
+                <li>Von Hexe vergiftet? → Nicht die Hexe benennen!</li>
+                <li>Gelyncht? → Niemanden der Lynch-Gruppe benennen!</li>
+              </ul>
+            </div>`,
+        },
+        amor: {
+          name: "Amor",
+          emoji: "💘",
+          team: "good",
+          teamName: "🏠 Team WeRoad",
+          desc: "Du bist der Gott der Liebe! Vereine zwei Herzen.",
+          action: `<strong>💕 Verlieben (beliebig oft wiederholbar):</strong>
+            <ul>
+              <li>Sei mit <strong>genau zwei Personen</strong> allein</li>
+              <li>Bei 10+ Spielern: Bis zu eine weitere unbeteiligte Person darf dabei sein (<strong>nur 1x pro Spiel!</strong>)</li>
+              <li>Sag: <strong>"Ihr seid verliebt"</strong></li>
+              <li>⚠️ Nur <strong>ein aktives Paar</strong> gleichzeitig</li>
+            </ul>
+            <p><strong>💔 Effekt:</strong></p>
+            <ul>
+              <li>Stirbt eine verliebte Person, <strong>stirbt die andere sofort mit!</strong></li>
+              <li>Beide am Ende am Leben = <strong>Bonus-Sieg!</strong></li>
+            </ul>
+            <p><strong>🔄 Neues Paar:</strong> Wenn das Paar gestorben ist, darfst du erneut verlieben!</p>`,
+        },
+        buddha: {
+          name: "Buddha",
+          emoji: "🧘",
+          team: "neutral",
+          teamName: "☯️ Erleuchteter",
+          desc: "Strebe nach der totalen Erleuchtung aller Wesen!",
+          action: `<strong>🎯 Dein Ziel:</strong>
+            <ul>
+              <li><strong>Team-Sieg:</strong> Gewinne mit WeRoadern wenn alle Wölfe tot</li>
+              <li><strong>Solo-Sieg:</strong> Alle anderen Lebenden wurden erleuchtet!</li>
+            </ul>
+            <p><strong>🕊️ Erleuchtung = ROLLENTAUSCH:</strong></p>
+            <ul>
+              <li>Sei <strong>alleine</strong> mit jemandem</li>
+              <li>Sag: <strong>"Ich erleuchte dich"</strong></li>
+            </ul>
+            <div style="background:rgba(243,156,18,0.25); border:2px solid rgba(243,156,18,0.4); border-radius:12px; padding:15px; margin:15px 0;">
+              <strong style="color:#f39c12;">🔄 Rollentausch:</strong>
+              <ul style="margin-top:10px;">
+                <li>Die andere Person wird <strong>Buddha</strong></li>
+                <li>Du übernimmst <strong>deren Rolle</strong></li>
+                <li>Person gilt als "erleuchtet"</li>
+              </ul>
+            </div>`,
+        },
+        villager: {
+          name: "WeRoader",
+          emoji: "🎒",
+          team: "good",
+          teamName: "🏠 Team WeRoad",
+          desc: "Ein WeRoader auf Reise - deine Stimme zählt!",
+          action: `<strong>So lyncht ihr gemeinsam:</strong>
+            <ul>
+              <li><strong>Mindestens #Anzahl Werwölfe + 1 Personen</strong> einigen sich</li>
+              <li>Auf dieselbe verdächtige Person</li>
+              <li>→ Diese Person ist gelyncht!</li>
+            </ul>
+            <p style="margin-top:15px; padding:12px; background:rgba(76,175,80,0.2); border-radius:10px;">💡 Beobachte genau, wer sich mit wem heimlich trifft!</p>`,
+        },
+      };
+
+      function getRoles(n) {
+        const roleDistribution = {
+          5: ["werewolf", "seer", "guardian", "witch", "villager"],
+          6: ["werewolf", "werewolf", "seer", "guardian", "villager", "villager"],
+          7: ["werewolf", "werewolf", "seer", "guardian", "witch", "villager", "villager"],
+          8: ["werewolf", "werewolf", "werewolf", "seer", "guardian", "witch", "villager", "villager"],
+          9: ["werewolf", "werewolf", "werewolf", "seer", "guardian", "witch", "hunter", "villager", "villager"],
+          10: ["werewolf", "werewolf", "seer", "guardian", "witch", "hunter", "amor", "villager", "villager", "villager"],
+          11: ["werewolf", "werewolf", "werewolf", "seer", "guardian", "witch", "hunter", "amor", "villager", "villager", "villager"],
+          12: ["werewolf", "werewolf", "werewolf", "seer", "guardian", "witch", "hunter", "amor", "villager", "villager", "villager", "villager"],
+          13: ["werewolf", "werewolf", "werewolf", "seer", "guardian", "witch", "hunter", "amor", "buddha", "villager", "villager", "villager", "villager"],
+        };
+        return roleDistribution[n] || [];
+      }
+
+      function getWolfCount(n) {
+        const wolfCounts = { 5: 1, 6: 2, 7: 2, 8: 3, 9: 3, 10: 2, 11: 3, 12: 3, 13: 3 };
+        return wolfCounts[n] || 2;
+      }
+
+      const Crypto = {
+        async key(pw) {
+          const e = new TextEncoder();
+          const k = await crypto.subtle.importKey("raw", e.encode(pw), "PBKDF2", false, ["deriveKey"]);
+          return crypto.subtle.deriveKey(
+            { name: "PBKDF2", salt: e.encode("werwolf-srilanka"), iterations: 100000, hash: "SHA-256" },
+            k, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]
+          );
+        },
+        async enc(data, pw) {
+          const k = await this.key(pw);
+          const iv = crypto.getRandomValues(new Uint8Array(12));
+          const enc = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, k, new TextEncoder().encode(JSON.stringify(data)));
+          const c = new Uint8Array(iv.length + enc.byteLength);
+          c.set(iv);
+          c.set(new Uint8Array(enc), iv.length);
+          return btoa(String.fromCharCode(...c)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
+        },
+        async dec(str, pw) {
+          try {
+            const k = await this.key(pw);
+            let b = str.replace(/-/g, "+").replace(/_/g, "/");
+            while (b.length % 4) b += "=";
+            const c = Uint8Array.from(atob(b), (x) => x.charCodeAt(0));
+            const dec = await crypto.subtle.decrypt({ name: "AES-GCM", iv: c.slice(0, 12) }, k, c.slice(12));
+            return JSON.parse(new TextDecoder().decode(dec));
+          } catch { return null; }
+        },
+      };
+
+      function toast(msg, ok = false) {
+        document.querySelectorAll(".toast").forEach((t) => t.remove());
+        const t = document.createElement("div");
+        t.className = "toast";
+        t.style.background = ok ? "linear-gradient(135deg, #4caf50, #2e7d32)" : "linear-gradient(135deg, #e74c3c, #c0392b)";
+        t.textContent = msg;
+        document.body.appendChild(t);
+        setTimeout(() => { t.style.opacity = "0"; setTimeout(() => t.remove(), 300); }, 2500);
+      }
+
+      function showRules() {
+        document.getElementById("rules-modal").classList.remove("hidden");
+        document.getElementById("first-time-hint").classList.add("hidden");
+        localStorage.setItem("rulesShown", "true");
+      }
+
+      function closeRules() { document.getElementById("rules-modal").classList.add("hidden"); }
+
+      document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeRules(); });
+
+      let deferredPrompt = null;
+      window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        document.getElementById("install-banner").classList.remove("hidden");
+      });
+
+      function installApp() {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === "accepted") {
+              document.getElementById("install-banner").classList.add("hidden");
+              toast("App wird installiert!", true);
+            }
+            deferredPrompt = null;
+          });
+        } else {
+          const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+          if (isIOS) toast('Tippe auf Teilen → "Zum Home-Bildschirm"');
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        const p = new URLSearchParams(location.search).get("p");
+        if (p) {
+          document.getElementById("admin-section").classList.add("hidden");
+          document.getElementById("player-section").classList.remove("hidden");
+          document.getElementById("install-banner").classList.add("hidden");
+          document.getElementById("first-time-hint").classList.add("hidden");
+          data = await Crypto.dec(p, SECRET);
+          if (!data) { document.getElementById("error-card").classList.remove("hidden"); return; }
+          document.getElementById("reveal-card").classList.remove("hidden");
+          document.getElementById("player-name-preview").textContent = data.name;
+        } else {
+          if (!localStorage.getItem("rulesShown")) {
+            setTimeout(() => { document.getElementById("first-time-hint").classList.remove("hidden"); }, 2000);
+          }
+        }
+      });
+
+      async function createGame() {
+        const text = document.getElementById("player-names").value.trim();
+        if (!text) return toast("Bitte Namen eingeben!");
+        const names = text.split("\n").map((n) => n.trim()).filter((n) => n);
+        if (names.length < 5) return toast("Mindestens 5 Spieler nötig!");
+        if (names.length > 13) return toast("Maximal 13 Spieler möglich!");
+        if (new Set(names.map((n) => n.toLowerCase())).size !== names.length) return toast("Keine doppelten Namen!");
+
+        const roles = getRoles(names.length);
+        for (let i = roles.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [roles[i], roles[j]] = [roles[j], roles[i]];
+        }
+
+        const players = names.map((name, i) => ({ name, role: roles[i] }));
+        const wolves = players.filter((p) => p.role === "werewolf").map((p) => p.name);
+        const wolfCount = wolves.length;
+        const playerCount = names.length;
+
+        const container = document.getElementById("player-links");
+        container.innerHTML = "";
+        const base = location.href.split("?")[0].split("#")[0];
+
+        for (const p of players) {
+          const data = {
+            name: p.name, role: p.role,
+            wolves: p.role === "werewolf" ? wolves : [],
+            soloWolf: wolves.length === 1 && p.role === "werewolf",
+            wolfCount, playerCount,
+          };
+          const enc = await Crypto.enc(data, SECRET);
+          const link = `${base}?p=${enc}`;
+          container.innerHTML += `<div class="player-link"><span class="player-link-name">${p.name}</span><button class="btn-copy" onclick="copy(this,'${link}','${p.name}')">📋 Kopieren</button></div>`;
+        }
+
+        const count = {};
+        players.forEach((p) => { const e = ROLES[p.role].emoji; count[e] = (count[e] || 0) + 1; });
+        container.innerHTML += `<div class="info-box"><strong>Verteilte Rollen:</strong> ${Object.entries(count).map(([e, c]) => c + e).join(" ")}</div>`;
+
+        document.getElementById("setup-card").classList.add("hidden");
+        document.getElementById("links-card").classList.remove("hidden");
+        toast("✅ Spiel erstellt!", true);
+      }
+
+      function copy(btn, link, playerName) {
+        const inviteText = `🐺 Hilfe, Sri Lanka wird von Werwölfen befallen! 🇱🇰
+
+Hey ${playerName}, du wurdest zu einer Runde Werwolf eingeladen! 🎭
+
+Die Werwölfe haben es auf unsere WeRoad-Gruppe abgesehen... 😱
+
+🏆 Gewinnen lohnt sich - es warten Elefantensticker auf euch! 🐘
+
+Öffne diesen Link um deine geheime Rolle zu sehen:
+${link}
+
+⚠️ Zeig diesen Link niemandem - er ist nur für dich!`;
+
+        navigator.clipboard.writeText(inviteText).catch(() => {
+          const t = document.createElement("textarea");
+          t.value = inviteText;
+          t.style.cssText = "position:fixed;opacity:0";
+          document.body.appendChild(t);
+          t.select();
+          document.execCommand("copy");
+          document.body.removeChild(t);
+        });
+        btn.textContent = "✓ Kopiert";
+        btn.classList.add("copied");
+        setTimeout(() => { btn.textContent = "📋 Kopieren"; btn.classList.remove("copied"); }, 2000);
+      }
+
+      function resetGame() {
+        document.getElementById("setup-card").classList.remove("hidden");
+        document.getElementById("links-card").classList.add("hidden");
+        document.getElementById("player-names").value = "";
+      }
+
+      function goHome() { location.href = location.pathname; }
+
+      let data = null;
+
+      function createSparkles() {
+        const container = document.getElementById("sparkle-container");
+        container.innerHTML = "";
+        for (let i = 0; i < 20; i++) {
+          const sparkle = document.createElement("div");
+          sparkle.className = "sparkle";
+          sparkle.style.left = Math.random() * 100 + "%";
+          sparkle.style.top = Math.random() * 100 + "%";
+          sparkle.style.setProperty("--tx", (Math.random() - 0.5) * 200 + "px");
+          sparkle.style.setProperty("--ty", (Math.random() - 0.5) * 200 + "px");
+          sparkle.style.animationDelay = Math.random() * 0.5 + "s";
+          sparkle.style.background = Math.random() > 0.5 ? "#4caf50" : Math.random() > 0.5 ? "#fff" : "#ffb74d";
+          container.appendChild(sparkle);
+        }
+      }
+
+      function showRole() {
+        if (!data) return;
+        const revealCard = document.getElementById("reveal-card");
+        const roleCard = document.getElementById("role-card");
+        const flipInner = document.getElementById("card-flip-inner");
+
+        flipInner.classList.add("flipping");
+        revealCard.classList.add("revealing");
+
+        setTimeout(() => {
+          const r = ROLES[data.role];
+          const emojiEl = document.getElementById("role-emoji");
+          emojiEl.textContent = r.emoji;
+          emojiEl.classList.add("bouncing");
+
+          document.getElementById("role-name").textContent = r.name;
+          const team = document.getElementById("role-team");
+          team.textContent = r.teamName;
+          team.className = "role-team " + r.team;
+
+          document.getElementById("role-desc").innerHTML = data.soloWolf && r.descSolo ? `<p>${r.descSolo}</p>` : `<p>${r.desc}</p>`;
+
+          let actionHtml = data.soloWolf && r.actionSolo ? r.actionSolo : r.action;
+          if (data.wolfCount) actionHtml = actionHtml.replace(/#Anzahl Werwölfe \+ 1/g, `${data.wolfCount + 1}`);
+          document.getElementById("role-action").innerHTML = actionHtml;
+
+          if (data.role === "werewolf" && data.wolves && data.wolves.length > 1) {
+            const others = data.wolves.filter((n) => n !== data.name);
+            if (others.length > 0) {
+              document.getElementById("teammates-list").innerHTML = others.map((n) => `<li>🐺 ${n}</li>`).join("");
+              document.getElementById("teammates-section").classList.remove("hidden");
+            }
+          } else {
+            document.getElementById("teammates-section").classList.add("hidden");
+          }
+
+          revealCard.classList.add("hidden");
+          roleCard.classList.remove("hidden");
+          roleCard.classList.add("revealing");
+          createSparkles();
+
+          setTimeout(() => {
+            flipInner.classList.remove("flipping");
+            revealCard.classList.remove("revealing");
+            roleCard.classList.remove("revealing");
+            emojiEl.classList.remove("bouncing");
+          }, 1000);
+        }, 500);
+      }
+
+      function hideRole() {
+        document.getElementById("role-card").classList.add("hidden");
+        document.getElementById("reveal-card").classList.remove("hidden");
+        document.getElementById("teammates-section").classList.add("hidden");
+        document.getElementById("card-flip-inner").classList.remove("flipping");
+      }
+    </script>
+  </body>
+</html>
