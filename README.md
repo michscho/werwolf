@@ -61,3 +61,10 @@ npx serve .
 ## 📄 Lizenz
 
 MIT License - Frei verwendbar für private und kommerzielle Zwecke.
+## Projektstruktur
+```
+index.html       → HTML-Markup
+css/styles.css   → Styles
+js/app.js        → JavaScript-Logik
+assets/          → Bilder & Medien
+```
